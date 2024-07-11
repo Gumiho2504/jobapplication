@@ -1,0 +1,23 @@
+-- Create the jobapplication database
+CREATE DATABASE jobapplication;
+
+-- Use the newly created database
+USE jobapplication;
+
+-- Create the Job table
+CREATE TABLE Job (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    company VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL
+);
+
+-- Insert initial data into the Job table
+INSERT INTO Job (title, description, location, company, type) VALUES
+('Software Engineer', 'Develop and maintain software applications.', 'New York, NY', 'Tech Corp', 'Full-time'),
+('Data Scientist', 'Analyze and interpret complex data sets.', 'San Francisco, CA', 'Data Inc', 'Full-time'),
+('Project Manager', 'Manage software development projects.', 'Austin, TX', 'ManageIT', 'Contract'),
+('UX Designer', 'Design user interfaces and experiences.', 'Seattle, WA', 'DesignHub', 'Part-time'),
+('Backend Developer', 'Develop server-side logic, definition, and maintenance of the central database.', 'Chicago, IL', 'CodeBase', 'Full-time');

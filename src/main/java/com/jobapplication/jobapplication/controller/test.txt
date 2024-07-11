@@ -1,0 +1,10 @@
+Testing the API
+You can use tools like Postman or curl to test your RESTful API.
+
+Get all jobs: GET http://localhost:8080/api/jobs
+Get job by ID: GET http://localhost:8080/api/jobs/{id}
+Create job: POST http://localhost:8080/api/jobs with JSON body
+Update job: PUT http://localhost:8080/api/jobs/{id} with JSON body
+Delete job: DELETE http://localhost:8080/api/jobs/{id}
+
+
