@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (_keyForm.currentState!.validate()) {
                   print("hello");
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => JobListScreen()));
+                      MaterialPageRoute(builder: (context) => HomePage()));
                 }
               },
               style: ElevatedButton.styleFrom(

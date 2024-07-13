@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_application/model/job.dart';
 import 'package:job_application/provider/job_provider.dart';
+import 'package:job_application/ui/page/joblist-page.dart';
 import 'package:provider/provider.dart';
 
 class AddJobScreen extends StatefulWidget {
@@ -84,4 +85,4 @@ class _AddJobScreenState extends State<AddJobScreen> {
       ),
     );
   }
-  }
+}

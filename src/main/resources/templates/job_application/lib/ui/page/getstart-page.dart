@@ -29,7 +29,7 @@ class _GetStartPageState extends State<GetStartPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            color: Colors.deepOrange,
+            //color: Colors.deepOrange,
             width: double.infinity,
             height: 550.h,
             child: Image.asset(
@@ -60,7 +60,7 @@ class _GetStartPageState extends State<GetStartPage> {
                   Text(
                     "Your Perfect Career",
                     style: GoogleFonts.poppins(
-                        color: Color.fromARGB(255, 11, 71, 175),
+                        color: Color(0xFF0B47AF),
                         fontSize: 25.h,
                         fontWeight: FontWeight.w600),
                   ),
