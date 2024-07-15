@@ -6,7 +6,13 @@ class Job {
   final String company;
   final String type;
 
-  Job({required this.id, required this.title, required this.description, required this.location, required this.company, required this.type});
+  Job(
+      {required this.id,
+      required this.title,
+      required this.description,
+      required this.location,
+      required this.company,
+      required this.type});
 
   factory Job.fromJson(Map<String, dynamic> json) {
     return Job(
@@ -30,3 +36,5 @@ class Job {
     };
   }
 }
+
+final jobType = ["All", "Accountant", "DBM", "Contant Writting"];

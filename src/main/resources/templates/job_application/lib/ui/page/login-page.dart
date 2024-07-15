@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:job_application/ui/navigationController.dart';
 import 'package:job_application/ui/page/home-page.dart';
 import 'package:job_application/ui/page/joblist-page.dart';
 import 'package:job_application/ui/page/signin-page.dart';
@@ -126,9 +129,9 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
               onPressed: () {
                 if (_keyForm.currentState!.validate()) {
-                  print("hello");
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => NavigetionPage()));
+                  // Get.off(NavigetionPage(),transition: Transition.noTransition);
                 }
               },
               style: ElevatedButton.styleFrom(
