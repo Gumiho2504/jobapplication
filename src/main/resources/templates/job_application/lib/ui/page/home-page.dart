@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/job.dart';
 import 'package:job_application/ui/component/home-page/job-box.dart';
 import 'package:job_application/ui/component/home-page/section.dart';
@@ -104,44 +105,51 @@ class _HomePageState extends State<HomePage> {
 
               // Search field
 
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(20),
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                          color: backgroundColor,
-                          borderRadius: BorderRadius.circular(10.r)),
-                      child: TextField(
-                          style: bodyText1,
-                          decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.search,
-                                color: secondaryColors,
-                                size: 25.h,
-                              ),
-                              border: InputBorder.none,
-                              hintText: "Search",
-                              hintStyle: GoogleFonts.poppins(
-                                  color: secondAccentColors, fontSize: 16.h))),
+              Container(
+                height: 60.h,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        height: 60.h,
+                        decoration: BoxDecoration(
+                            color: backgroundColor,
+                            borderRadius: BorderRadius.circular(10.r)),
+                        child: Center(
+                          child: TextField(
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black, fontSize: 18.h),
+                              decoration: InputDecoration(
+                                  icon: Icon(
+                                    Iconsax.search_normal,
+                                    color: secondaryColors,
+                                    size: 25.h,
+                                  ),
+                                  border: InputBorder.none,
+                                  hintText: "Search Jobs",
+                                  hintStyle: GoogleFonts.poppins(
+                                      color: secondAccentColors,
+                                      fontSize: 18.h))),
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  Container(
-                      height: 60,
-                      width: 60,
-                      padding: EdgeInsets.all(15.h),
-                      decoration: BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Image.asset(
-                        "assets/images/filter.png",
-                        color: Colors.black,
-                      ))
-                ],
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    Container(
+                        height: 60.h,
+                        width: 60.h,
+                        padding: EdgeInsets.all(15.h),
+                        decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Image.asset(
+                          "assets/images/filter.png",
+                          color: Colors.black,
+                        ))
+                  ],
+                ),
               )
             ],
           ),
@@ -153,12 +161,11 @@ class _HomePageState extends State<HomePage> {
               children: [
                 section("Suggested Jobs"),
                 SizedBox(
-                    height: 210.h,
+                    height: 216.h,
                     child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) => jobBox(),
-                    )),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) => const JobBox())),
                 section("Recent Jobs"),
                 SizedBox(
                     height: 45.h,
@@ -173,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: SizedBox(
-                    height: 210.h,
+                    height: 216.h,
                     child: ListView.builder(
                         padding: EdgeInsets.only(top: 0, bottom: 10.h),
                         physics: ScrollPhysics(),
@@ -181,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 2,
                         itemBuilder: (context, index) => Padding(
                               padding: EdgeInsets.only(bottom: 10),
-                              child: jobBox(),
+                              child: JobBox(),
                             )),
                   ),
                 ),

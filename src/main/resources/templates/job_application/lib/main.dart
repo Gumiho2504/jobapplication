@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Job Application',
           theme: ThemeData(
             primarySwatch: Colors.blue,
