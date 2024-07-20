@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/job.dart';
+import 'package:job_application/ui/component/detial-page/about-detail.dart';
+import 'package:job_application/ui/component/detial-page/company-detail.dart';
+import 'package:job_application/ui/component/detial-page/similarjob-detail.dart';
 import 'package:job_application/ui/style/style.dart';
 
 class JobDetailScreen extends StatelessWidget {
@@ -47,17 +50,11 @@ class JobDetailPage extends StatefulWidget {
 }
 
 class _JobDetailPageState extends State<JobDetailPage> {
-  final labelArray = ["About", "Company", "View"];
+  final labelArray = ["About", "Company", "Similar Jobs"];
   List<Widget> page = [
-    Container(
-      color: Colors.black,
-    ),
-    Container(
-      color: const Color.fromARGB(255, 119, 18, 18),
-    ),
-    Container(
-      color: Colors.blue,
-    )
+    const AboutDetail(),
+    const CompanyAtDetail(),
+    const SimilarJobDetial()
   ];
   int currentSelect = 0;
   int activePage = 0;

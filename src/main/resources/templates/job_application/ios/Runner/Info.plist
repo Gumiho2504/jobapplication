@@ -46,11 +46,12 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>YOUR_REASON_FOR_USING_LOCATION</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YOUR_REASON_FOR_USING_LOCATION</string>
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
+<string>We need your location to show your current position on the map.</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>We need your location to provide continuous tracking, even when the app is in the background.</string>
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>We need your location to show your current position on the map and for continuous tracking.</string>
+
 
 </dict>
 </plist>
