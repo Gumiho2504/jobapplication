@@ -16,8 +16,10 @@ section(String title) => Padding(
               onPressed: () {},
               child: Text(
                 "See all",
-                style:
-                    GoogleFonts.poppins(fontSize: 15.h, color: secondaryColors),
+                style: GoogleFonts.poppins(
+                    color: backgroundColor,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700),
               ))
         ],
       ),
