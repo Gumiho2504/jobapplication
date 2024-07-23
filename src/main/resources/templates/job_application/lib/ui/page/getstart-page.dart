@@ -22,7 +22,7 @@ class _GetStartPageState extends State<GetStartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    MediaQuery.sizeOf(context);
     ScreenUtil.init(context, designSize: const Size(430, 932));
     return Scaffold(
       body: Column(

@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:job_application/ui/component/profile-page/about-profile.dart';
+import 'package:job_application/ui/component/profile-page/education-profile.dart';
+import 'package:job_application/ui/component/profile-page/experience-profile.dart';
+import 'package:job_application/ui/component/profile-page/skill-profile.dart';
 import 'package:job_application/ui/page/explore-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
@@ -17,6 +21,12 @@ class _ProfilePageState extends State<ProfilePage> {
   int currentSelect = 0;
   int activePage = 0;
   final barLabel = ["About", "Experiences", "Educations", "Skills"];
+  final page = [
+    const AboutAtProfile(),
+    const Experience(),
+    const Education(),
+    const Skills()
+  ];
   final pageController = PageController();
   @override
   Widget build(BuildContext context) {
@@ -27,10 +37,26 @@ class _ProfilePageState extends State<ProfilePage> {
             height: double.infinity,
             width: double.infinity,
           ),
-          Container(
-            width: double.infinity,
-            height: 200.h,
-            color: Color(0xFFEFEFEB),
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 200.h,
+                color: const Color(0xFFEFEFEB),
+              ),
+              Positioned(
+                  top: 10,
+                  right: 30,
+                  child: Row(
+                    children: [
+                      ExportButton(),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      EditButton()
+                    ],
+                  ))
+            ],
           ),
           Padding(
             padding: EdgeInsets.symmetric(
@@ -157,7 +183,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   height: 1,
                   color: Colors.black87,
-                )
+                ),
+                Expanded(
+                    child: Container(
+                  color: backgroundColor,
+                  child: PageView.builder(
+                      padEnds: false,
+                      controller: pageController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: page.length,
+                      onPageChanged: (value) => {
+                            setState(() {
+                              currentSelect = value;
+                              activePage = value;
+                            })
+                          },
+                      itemBuilder: (context, index) => page[index]),
+                ))
               ],
             ),
           ),
@@ -177,7 +219,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text(
                   label,
                   style: GoogleFonts.poppins(
-                      color: Colors.black,
+                      color:
+                          currentSelect == index ? primaryColor : Colors.black,
                       fontSize: currentSelect == index ? 12.h : 10.h,
                       fontWeight: FontWeight.w500),
                 ),
@@ -185,9 +228,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   setState(() {
                     currentSelect = index;
                     activePage = index;
-                    // pageController.animateToPage(index,
-                    //     duration: Duration(milliseconds: 300),
-                    //     curve: Curves.bounceInOut);
+                    pageController.animateToPage(index,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.bounceInOut);
                   });
                 },
               ),
@@ -201,6 +244,52 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(5.r),
                         topRight: Radius.circular(5.r))),
+              )
+            ],
+          ),
+        ),
+      );
+
+  ExportButton() => IntrinsicWidth(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
+          decoration: const BoxDecoration(color: backgroundColor, boxShadow: [
+            BoxShadow(color: Colors.black87, spreadRadius: 0.1, blurRadius: 0.1)
+          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.download_rounded,
+                size: 18.h,
+              ),
+              Text(
+                "Export",
+                style:
+                    GoogleFonts.poppins(color: Colors.black87, fontSize: 14.h),
+              )
+            ],
+          ),
+        ),
+      );
+
+  EditButton() => IntrinsicWidth(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
+          decoration: const BoxDecoration(color: backgroundColor, boxShadow: [
+            BoxShadow(color: Colors.black87, spreadRadius: 0.1, blurRadius: 0.1)
+          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.edit,
+                size: 18.h,
+              ),
+              Text(
+                "Edit Profile",
+                style:
+                    GoogleFonts.poppins(color: Colors.black87, fontSize: 14.h),
               )
             ],
           ),

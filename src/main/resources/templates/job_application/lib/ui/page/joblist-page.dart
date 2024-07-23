@@ -5,6 +5,8 @@ import 'package:job_application/ui/page/jobdetial-page.dart';
 import 'package:provider/provider.dart';
 
 class JobListScreen extends StatelessWidget {
+  const JobListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final jobProvider = Provider.of<JobProvider>(context);
@@ -12,10 +14,10 @@ class JobListScreen extends StatelessWidget {
     return Scaffold(
       // backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Job List'),
+        title: const Text('Job List'),
       ),
       body: jobProvider.isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: jobProvider.jobs.length,
               itemBuilder: (context, index) {
@@ -23,14 +25,14 @@ class JobListScreen extends StatelessWidget {
                 return ListTile(
                   title: Text(
                     job.title,
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
                   subtitle: Text(job.company),
                   trailing: IconButton(
                     onPressed: () {
                       jobProvider.deleteJob(job.id);
                     },
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                   ),
                   onTap: () {
                     Navigator.push(
@@ -44,7 +46,7 @@ class JobListScreen extends StatelessWidget {
               },
             ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
