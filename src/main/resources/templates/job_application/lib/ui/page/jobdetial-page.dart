@@ -7,6 +7,7 @@ import 'package:job_application/model/job.dart';
 import 'package:job_application/ui/component/detial-page/about-detail.dart';
 import 'package:job_application/ui/component/detial-page/company-detail.dart';
 import 'package:job_application/ui/component/detial-page/similarjob-detail.dart';
+import 'package:job_application/ui/page/editjob-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
 class JobDetailScreen extends StatelessWidget {
@@ -19,6 +20,18 @@ class JobDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(job.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditJobPage(jobData: job)),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

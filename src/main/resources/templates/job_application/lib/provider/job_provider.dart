@@ -2,22 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:job_application/model/job.dart';
 import 'package:job_application/service/job_service.dart';
 
-
-
 class JobProvider with ChangeNotifier {
-
   JobService _jobService = JobService();
-  
 
   List<Job> _jobs = [];
   bool _isLoading = false;
 
   List<Job> get jobs => _jobs;
   bool get isLoading => _isLoading;
-    JobProvider() {
+  JobProvider() {
     fetchJobs();
   }
-
 
   Future<void> fetchJobs() async {
     _isLoading = true;
@@ -34,6 +29,7 @@ class JobProvider with ChangeNotifier {
 
   Future<void> updateJob(int id, Job job) async {
     await _jobService.updateJob(id, job);
+    print("update");
     await fetchJobs();
   }
 
