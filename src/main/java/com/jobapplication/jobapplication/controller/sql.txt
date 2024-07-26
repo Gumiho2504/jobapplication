@@ -21,3 +21,50 @@ INSERT INTO Job (title, description, location, company, type) VALUES
 ('Project Manager', 'Manage software development projects.', 'Austin, TX', 'ManageIT', 'Contract'),
 ('UX Designer', 'Design user interfaces and experiences.', 'Seattle, WA', 'DesignHub', 'Part-time'),
 ('Backend Developer', 'Develop server-side logic, definition, and maintenance of the central database.', 'Chicago, IL', 'CodeBase', 'Full-time');
+
+
+
+
+use jobapplication;
+
+CREATE TABLE User (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+
+INSERT INTO User (firstName, lastName, email, password) VALUES
+('John', 'Doe', 'john.doe@example.com', 'password123'),
+('Jane', 'Smith', 'jane.smith@example.com', 'password123'),
+('Alice', 'Johnson', 'alice.johnson@example.com', 'password123'),
+('Bob', 'Brown', 'bob.brown@example.com', 'password123'),
+('Charlie', 'Davis', 'charlie.davis@example.com', 'password123'),
+('David', 'Miller', 'david.miller@example.com', 'password123'),
+('Eva', 'Wilson', 'eva.wilson@example.com', 'password123'),
+('Frank', 'Moore', 'frank.moore@example.com', 'password123'),
+('Grace', 'Taylor', 'grace.taylor@example.com', 'password123'),
+('Hannah', 'Anderson', 'hannah.anderson@example.com', 'password123');
+
+
+
+
+use jobapplication;
+
+ALTER TABLE Job
+ADD COLUMN user_id INT DEFAULT NULL;
+
+ALTER TABLE Job
+ADD PRIMARY KEY (id);
+
+ALTER TABLE Job
+ADD CONSTRAINT FK_DETAIL
+FOREIGN KEY (user_id)
+REFERENCES _user(id);
+
+
+
+
+

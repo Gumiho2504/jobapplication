@@ -1,5 +1,6 @@
 package com.jobapplication.jobapplication.controller;
 
+import com.jobapplication.jobapplication.dto.JobDTO;
 import com.jobapplication.jobapplication.model.Job;
 import com.jobapplication.jobapplication.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class JobController {
     private JobService jobService;
 
     @GetMapping
-    public List<Job> getAllJobs() {
+    public List<JobDTO> getAllJobs() {
         return jobService.getAllJobs();
     }
 
@@ -40,7 +41,7 @@ public class JobController {
                     job.setDescription(jobDetails.getDescription());
                     job.setLocation(jobDetails.getLocation());
                     job.setCompany(jobDetails.getCompany());
-                    job.setType(jobDetails.getType());
+                    job.setType(jobDetails.getType().toString());
                     return ResponseEntity.ok(jobService.saveJob(job));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());

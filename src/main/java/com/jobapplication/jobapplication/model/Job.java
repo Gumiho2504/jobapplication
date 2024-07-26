@@ -1,27 +1,42 @@
 package com.jobapplication.jobapplication.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Date;
 
 @Entity
 public class Job {
 
-   @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
     private String location;
     private String company;
-    private String type; // e.g., Full-time, Part-time, Contract
+    private String type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Job() {
+    }
+
+    public Job(String title, String description, String location, String company, String type) {
+
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.company = company;
+        this.type = type;
+    }
 
     // Getters and Setters
 
-
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
@@ -29,7 +44,7 @@ public class Job {
     }
 
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     public void setTitle(String title) {
@@ -37,7 +52,7 @@ public class Job {
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public void setDescription(String description) {
@@ -45,7 +60,7 @@ public class Job {
     }
 
     public String getLocation() {
-        return this.location;
+        return location;
     }
 
     public void setLocation(String location) {
@@ -53,7 +68,7 @@ public class Job {
     }
 
     public String getCompany() {
-        return this.company;
+        return company;
     }
 
     public void setCompany(String company) {
@@ -61,10 +76,32 @@ public class Job {
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    // Override toString() for debugging purposes
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", company='" + company + '\'' +
+                ", type='" + type + '\'' +
+
+                '}';
     }
 }

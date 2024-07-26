@@ -17,9 +17,9 @@ section(String title) => Padding(
               child: Text(
                 "See all",
                 style: GoogleFonts.poppins(
-                    color: backgroundColor,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700),
+                    color: Colors.black87,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400),
               ))
         ],
       ),

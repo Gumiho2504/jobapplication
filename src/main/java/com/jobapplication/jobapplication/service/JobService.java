@@ -1,5 +1,7 @@
 package com.jobapplication.jobapplication.service;
 
+import com.jobapplication.jobapplication.dto.JobDTO;
+import com.jobapplication.jobapplication.mapper.JobMapper;
 import com.jobapplication.jobapplication.model.Job;
 import com.jobapplication.jobapplication.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,12 @@ public class JobService {
     @Autowired
     private JobRepository jobRepository;
 
-    public List<Job> getAllJobs() {
-        return jobRepository.findAll();
+    @Autowired
+    private JobMapper jobMapper;
+
+    public List<JobDTO> getAllJobs() {
+        return jobRepository.findAll().stream()
+                .map(jobMapper::toJobDTO).toList();
     }
 
     public Optional<Job> getJobById(Long id) {

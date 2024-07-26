@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:job_application/provider/job_provider.dart';
+import 'package:job_application/ui/navigationController.dart';
 
 import 'package:job_application/ui/page/getstart-page.dart';
 import 'package:job_application/ui/page/joblist-page.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const JobListScreen(),
+          home: const GetStartPage(),
         ),
       ),
     );
