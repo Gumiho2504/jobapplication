@@ -3,12 +3,16 @@ package com.jobapplication.jobapplication.mapper;
 import com.jobapplication.jobapplication.dto.JobDTO;
 import com.jobapplication.jobapplication.dto.UserDTO;
 import com.jobapplication.jobapplication.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
+
+    @Autowired
+    UserDetailMapper userDetailMapper;
 
     public UserDTO toUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
@@ -17,6 +21,8 @@ public class UserMapper {
         userDTO.setLastName(user.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
+        userDTO.setUserDetail(userDetailMapper.toUserDetailDTO(user.getUserDetail()));
+
         userDTO.setSaveJobs(
                 user.getSaveJobs().stream()
                         .map(job -> {

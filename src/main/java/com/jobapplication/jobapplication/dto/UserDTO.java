@@ -9,8 +9,17 @@ public class UserDTO {
     private String email;
     private String password;
     private List<JobDTO> saveJobs;
-
+   private UserDetailDTO userDetail;
     // Getters and setters
+
+
+    public UserDetailDTO getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetailDTO userDetail) {
+        this.userDetail = userDetail;
+    }
 
     public Long getId() {
         return id;

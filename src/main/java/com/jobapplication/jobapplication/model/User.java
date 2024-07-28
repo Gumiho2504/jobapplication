@@ -27,8 +27,15 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-
     private List<Job> saveJobs;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_detail_id")
+    private  UserDetail userDetail;
+
+    public User(UserDetail userDetail) {
+        this.userDetail = userDetail;
+    }
 
     public User(List<Job> saveJobs) {
         this.saveJobs = saveJobs;
@@ -93,5 +100,13 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 }
