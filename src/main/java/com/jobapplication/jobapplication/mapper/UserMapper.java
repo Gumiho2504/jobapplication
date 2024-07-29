@@ -14,6 +14,9 @@ public class UserMapper {
     @Autowired
     UserDetailMapper userDetailMapper;
 
+    @Autowired
+    JobMapper jobMapper;
+
     public UserDTO toUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
@@ -38,5 +41,21 @@ public class UserMapper {
                         .collect(Collectors.toList())
         );
         return userDTO;
+    }
+
+    public User toUser(UserDTO userDTO) {
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setUserDetail(userDetailMapper.toUserDetail(userDTO.getUserDetail()));
+        user.setSaveJobs(userDTO.getSaveJobs().stream()
+                .map(jobMapper::toJob).collect(Collectors.toList())
+        );
+
+
+        return user;
     }
 }

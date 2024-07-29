@@ -2,13 +2,17 @@ package com.jobapplication.jobapplication.service;
 
 import com.jobapplication.jobapplication.dto.JobDTO;
 import com.jobapplication.jobapplication.dto.UserDTO;
+import com.jobapplication.jobapplication.dto.UserDetailDTO;
+import com.jobapplication.jobapplication.mapper.UserDetailMapper;
 import com.jobapplication.jobapplication.mapper.UserMapper;
 import com.jobapplication.jobapplication.model.Job;
 import com.jobapplication.jobapplication.model.User;
+import com.jobapplication.jobapplication.model.UserDetail;
 import com.jobapplication.jobapplication.repository.UserRepositoryImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +26,10 @@ public class UserService {
 
     @Autowired
     private JobService jobService;
+
+    @Autowired UserDetailService userDetailService;
+    @Autowired
+    private UserDetailMapper userDetailMapper;
 
     @Autowired
     public UserService(UserRepositoryImp userRepositoryImp) {
@@ -37,28 +45,7 @@ public class UserService {
         UserDTO userDTO = new UserDTO();
         User tempUser = new User();
         tempUser = userRepositoryImp.findById(id);
-        userDTO.setId(tempUser.getId());
-        userDTO.setEmail(tempUser.getEmail());
-        userDTO.setFirstName(tempUser.getFirstName());
-        userDTO.setLastName(tempUser.getLastName());
-        userDTO.setPassword(tempUser.getPassword());
-        userDTO.setSaveJobs(
-
-                tempUser.getSaveJobs().stream()
-                        .map(job -> {
-                            JobDTO jobDTO = new JobDTO();
-                            jobDTO.setId(job.getId());
-                            jobDTO.setTitle(job.getTitle());
-                            jobDTO.setDescription(job.getDescription());
-                            jobDTO.setLocation(job.getLocation());
-                            jobDTO.setCompany(job.getCompany());
-                            jobDTO.setType(job.getType());
-                            return jobDTO;
-                        })
-                        .collect(Collectors.toList())
-
-        );
-
+        userDTO  = userMapper.toUserDTO(tempUser);
         return userDTO;
     }
 
@@ -83,16 +70,26 @@ public class UserService {
             job.setType(jobDTO.getType());
             tempUser.addJob(job);
         });
-//        tempUser.setSaveJobs(userDTO.getSaveJobs().stream().map(jobs->{
-//           Job job = new Job();
-//           job.setId(jobs.getId());
-//           job.setTitle(jobs.getTitle());
-//           job.setDescription(jobs.getDescription());
-//           job.setLocation(jobs.getLocation());
-//           job.setCompany(jobs.getCompany());
-//           job.setType(jobs.getType());
-//           return job;
-//        }).collect(Collectors.toList()));
+
+        // create user detail
+        if(userDTO.getUserDetail() != null){
+            UserDetailDTO userDetailDTO = new UserDetailDTO();
+            userDetailDTO = userDTO.getUserDetail();
+            if(userDetailDTO.getEducations() == null){
+                userDetailDTO.setEducations(new ArrayList<>());
+            }
+            if(userDetailDTO.getExperiences() == null){
+                userDetailDTO.setExperiences(new ArrayList<>());
+            }
+            if(userDetailDTO.getSkills() == null){
+                userDetailDTO.setSkills(new ArrayList<>());
+            }
+            userDetailService.addUserDetail(userDTO.getUserDetail());
+            tempUser.setUserDetail(userDetailMapper.toUserDetail(userDTO.getUserDetail()));
+
+
+        }
+
         userRepositoryImp.updateUser(tempUser);
     }
 

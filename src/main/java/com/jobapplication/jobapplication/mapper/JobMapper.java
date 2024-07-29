@@ -17,4 +17,14 @@ public class JobMapper {
         jobDTO.setCompany(job.getCompany());
         return jobDTO;
     }
+    public Job toJob(JobDTO jobDTO){
+        Job job = new Job();
+        job.setId(jobDTO.getId());
+        job.setTitle(jobDTO.getTitle());
+        job.setDescription(jobDTO.getDescription());
+        job.setLocation(jobDTO.getLocation());
+        job.setType(jobDTO.getType());
+        job.setCompany(jobDTO.getCompany());
+        return job;
+    }
 }

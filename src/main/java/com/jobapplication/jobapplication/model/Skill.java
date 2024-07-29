@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,11 +24,11 @@ public class Skill {
 
     // Getter and Setter
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
