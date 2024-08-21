@@ -77,7 +77,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
   Widget build(BuildContext context) {
     ScreenUtil.init(
       context,
-      designSize: Size(430, 932),
+      designSize: const Size(430, 932),
     );
     return Scaffold(
         backgroundColor: accentColor.withOpacity(0.98),

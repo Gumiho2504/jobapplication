@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/job.dart';
 import 'package:job_application/ui/component/home-page/job-box.dart';
 import 'package:job_application/ui/component/home-page/section.dart';
+import 'package:job_application/ui/page/search-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
 class HomePage extends StatefulWidget {
@@ -105,50 +107,57 @@ class _HomePageState extends State<HomePage> {
 
               // Search field
 
-              Container(
-                height: 60.h,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(20),
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                            color: backgroundColor,
-                            borderRadius: BorderRadius.circular(10.r)),
-                        child: Center(
-                          child: TextField(
-                              style: GoogleFonts.poppins(
-                                  color: Colors.black, fontSize: 18.h),
-                              decoration: InputDecoration(
-                                  icon: Icon(
-                                    Iconsax.search_normal,
-                                    color: secondaryColors,
-                                    size: 25.h,
-                                  ),
-                                  border: InputBorder.none,
-                                  hintText: "Search Jobs",
-                                  hintStyle: GoogleFonts.poppins(
-                                      color: secondAccentColors,
-                                      fontSize: 18.h))),
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => SearchPage(),
+                      transition: Transition.size,
+                      duration: Duration(milliseconds: 200));
+                },
+                child: Container(
+                  height: 60.h,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                              color: backgroundColor,
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: Center(
+                            child: TextField(
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black, fontSize: 18.h),
+                                decoration: InputDecoration(
+                                    icon: Icon(
+                                      Iconsax.search_normal,
+                                      color: secondaryColors,
+                                      size: 25.h,
+                                    ),
+                                    border: InputBorder.none,
+                                    hintText: "Search Jobs",
+                                    hintStyle: GoogleFonts.poppins(
+                                        color: secondAccentColors,
+                                        fontSize: 18.h))),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Container(
-                        height: 60.h,
-                        width: 60.h,
-                        padding: EdgeInsets.all(15.h),
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Image.asset(
-                          "assets/images/filter.png",
-                          color: Colors.black,
-                        ))
-                  ],
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Container(
+                          height: 60.h,
+                          width: 60.h,
+                          padding: EdgeInsets.all(15.h),
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset(
+                            "assets/images/filter.png",
+                            color: Colors.black,
+                          ))
+                    ],
+                  ),
                 ),
               )
             ],

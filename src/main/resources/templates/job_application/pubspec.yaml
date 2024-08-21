@@ -45,6 +45,7 @@ dependencies:
   flutter_map: ^7.0.2
   geolocator: ^11.1.0
   geocoding: ^3.0.0
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
