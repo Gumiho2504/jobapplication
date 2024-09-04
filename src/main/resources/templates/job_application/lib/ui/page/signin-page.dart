@@ -2,9 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:job_application/model/user.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/page/home-page.dart';
 import 'package:job_application/ui/page/joblist-page.dart';
 import 'package:job_application/ui/page/login-page.dart';
+import 'package:job_application/ui/page/profile-page.dart';
+
+import '../navigationController.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -12,11 +17,12 @@ class SignInPage extends StatefulWidget {
   @override
   State<SignInPage> createState() => _SignInPageState();
 }
-
+final userProvider = UserProvider();
 class _SignInPageState extends State<SignInPage> {
+
   final userName = TextEditingController();
   final passwords = TextEditingController();
-  final confirmPassword = TextEditingController();
+  final email = TextEditingController();
   final _keyForm = GlobalKey<FormState>();
   bool isShow = true;
   @override
@@ -139,7 +145,7 @@ class _SignInPageState extends State<SignInPage> {
                   borderRadius: BorderRadius.circular(10.r)),
               child: TextFormField(
                 style: GoogleFonts.poppins(color: Colors.white, fontSize: 16.h),
-                controller: confirmPassword,
+                controller: email,
                 obscureText: isShow,
                 obscuringCharacter: "*",
                 decoration: InputDecoration(
@@ -159,17 +165,18 @@ class _SignInPageState extends State<SignInPage> {
                       color: Colors.white,
                       size: 24.0,
                     ),
-                    hintText: "Confirm Passwords",
+                    hintText: "Email",
                     hintStyle: GoogleFonts.poppins(
                         color: Colors.white.withOpacity(0.7), fontSize: 16.h),
                     border: InputBorder.none,
                     fillColor: Colors.blue),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "password is require ";
-                  } else if (passwords.text != confirmPassword.text) {
-                    return "password not matches ";
+                    return "email is require ";
                   }
+                    // else if (passwords.text != email.text) {
+                  //   return "password not matches ";
+                  // }
                   return null;
                 },
               ),
@@ -181,9 +188,16 @@ class _SignInPageState extends State<SignInPage> {
             ElevatedButton(
                 onPressed: () {
                   if (_keyForm.currentState!.validate()) {
-                    print("hello");
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => JobListScreen()));
+                    String name = userName.text;
+                    String _email = email.text;
+                    String _password = passwords.text;
+
+                    User user = User(name: name, email: _email, password: _password);
+                    print("${user.name} | ${user.email} | ${user.password}");
+                userProvider.userSignIn(user);
+
+                 Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => NavigetionPage(user: user)));
                   }
                 },
                 style: ElevatedButton.styleFrom(

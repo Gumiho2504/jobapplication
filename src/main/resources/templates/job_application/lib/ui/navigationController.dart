@@ -6,24 +6,38 @@ import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/page/bookmark-page.dart';
 import 'package:job_application/ui/page/explore-page.dart';
 import 'package:job_application/ui/page/home-page.dart';
 import 'package:job_application/ui/page/profile-page.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
+
+import '../model/user.dart';
+import '../provider/job_provider.dart';
 
 class NavigetionPage extends StatefulWidget {
-  const NavigetionPage({super.key});
+  final User user;
+  const NavigetionPage({super.key, required this.user});
 
   @override
   State<NavigetionPage> createState() => _NavigetionPageState();
 }
 
 class _NavigetionPageState extends State<NavigetionPage> {
+
   final navigatorController = Get.put(NavigationController());
   int currentPageSelect = 0;
   @override
   Widget build(BuildContext context) {
+
+    final page = [
+      HomePage(),
+      ExplorationPage(),
+      BookMarkPage(),
+      ProfilePage(user: widget.user)
+    ];
     ScreenUtil.init(
       context,
       designSize: const Size(430, 932),
@@ -31,7 +45,7 @@ class _NavigetionPageState extends State<NavigetionPage> {
     return Scaffold(
       backgroundColor: accentColor,
       body: Obx(() =>
-          navigatorController.page[navigatorController.currentSelect.value]),
+          page[navigatorController.currentSelect.value]),
       bottomNavigationBar: Container(
           height: 120.h,
           width: double.infinity,
@@ -106,10 +120,11 @@ class _NavigetionPageState extends State<NavigetionPage> {
 class NavigationController extends GetxController {
   RxInt currentSelect = 0.obs;
 
-  final page = [
-    const HomePage(),
-    const ExplorationPage(),
-    const BookMarkPage(),
-    const ProfilePage()
-  ];
+
+  // final page = [
+  //   const HomePage(),
+  //   const ExplorationPage(),
+  //   const BookMarkPage(),
+  //   const ProfilePage()
+  // ];
 }

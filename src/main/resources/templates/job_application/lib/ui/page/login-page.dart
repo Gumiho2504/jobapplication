@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:job_application/model/job.dart';
 import 'package:job_application/ui/navigationController.dart';
-import 'package:job_application/ui/page/home-page.dart';
-import 'package:job_application/ui/page/joblist-page.dart';
 import 'package:job_application/ui/page/signin-page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,10 +14,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final userName = TextEditingController();
+
+  final email = TextEditingController();
   final passwords = TextEditingController();
   final _keyForm = GlobalKey<FormState>();
   bool isShow = true;
+  void login(String email,String password) async {
+    try {
+      await userProvider.userLogin(email, password);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => NavigetionPage(user: userProvider.user)));
+    }catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Failed to register'),
+      ));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,21 +62,21 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(10.r)),
             child: TextFormField(
               style: GoogleFonts.poppins(color: Colors.white, fontSize: 16.h),
-              controller: userName,
+              controller: email,
               decoration: InputDecoration(
                   icon: const Icon(
                     CupertinoIcons.person,
                     color: Colors.white,
                     size: 24.0,
                   ),
-                  hintText: "Username",
+                  hintText: "Email",
                   hintStyle: GoogleFonts.poppins(
                       color: Colors.white.withOpacity(0.7), fontSize: 16.h),
                   border: InputBorder.none,
                   fillColor: Colors.blue),
               validator: (value) {
                 if (value!.isEmpty) {
-                  return "username is require ";
+                  return "email is require ";
                 }
                 return null;
               },
@@ -129,8 +138,10 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
               onPressed: () {
                 if (_keyForm.currentState!.validate()) {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => NavigetionPage()));
+                  String _email = email.text;
+                  String _password = passwords.text;
+                  login(_email, _password);
+
                   // Get.off(NavigetionPage(),transition: Transition.noTransition);
                 }
               },

@@ -1,17 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:job_application/model/user.dart';
 import 'package:job_application/ui/component/profile-page/about-profile.dart';
 import 'package:job_application/ui/component/profile-page/education-profile.dart';
 import 'package:job_application/ui/component/profile-page/experience-profile.dart';
 import 'package:job_application/ui/component/profile-page/skill-profile.dart';
 import 'package:job_application/ui/page/explore-page.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final User user;
+  const ProfilePage({super.key, required this.user});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -23,13 +29,14 @@ class _ProfilePageState extends State<ProfilePage> {
   final barLabel = ["About", "Experiences", "Educations", "Skills"];
   final page = [
     const AboutAtProfile(),
-    const Experience(),
-    const Education(),
-    const Skills()
+    const ExperiencePageView(),
+    const EducationPageView(),
+    const SkillsPageView()
   ];
   final pageController = PageController();
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Stack(
         children: [
@@ -97,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           //Name
                           Text(
-                            "Srak SreyLen",
+                            "${widget.user.name}",
                             style: headline1,
                           ),
                           // current job
@@ -153,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 5.w,
                               ),
                               Text(
-                                "sraksreylen@outlook.com",
+                                "${widget.user.email}",
                                 style: GoogleFonts.poppins(
                                     color: Colors.black87,
                                     fontSize: 14.h,
@@ -205,7 +212,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-    );
+    ).animate()
+        .fadeIn(duration: Duration(milliseconds: 1000),curve: Curves.easeInToLinear);
   }
 
   bar(String label, int index) => Expanded(

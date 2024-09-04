@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:job_application/ui/style/style.dart';
 
-class Skills extends StatefulWidget {
-  const Skills({super.key});
+class SkillsPageView extends StatefulWidget {
+  const SkillsPageView({super.key});
 
   @override
-  State<Skills> createState() => _SkillsState();
+  State<SkillsPageView> createState() => _SkillsPageViewState();
 }
 
-class _SkillsState extends State<Skills> {
+class _SkillsPageViewState extends State<SkillsPageView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

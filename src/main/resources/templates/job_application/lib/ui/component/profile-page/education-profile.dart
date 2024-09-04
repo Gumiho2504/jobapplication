@@ -5,14 +5,14 @@ import 'package:iconsax/iconsax.dart';
 import 'package:job_application/ui/component/company-logo.dart';
 import 'package:job_application/ui/style/style.dart';
 
-class Education extends StatefulWidget {
-  const Education({super.key});
+class EducationPageView extends StatefulWidget {
+  const EducationPageView({super.key});
 
   @override
-  State<Education> createState() => _EducationState();
+  State<EducationPageView> createState() => _EducationPageViewState();
 }
 
-class _EducationState extends State<Education> {
+class _EducationPageViewState extends State<EducationPageView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

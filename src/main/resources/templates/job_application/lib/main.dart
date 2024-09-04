@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:job_application/provider/job_provider.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/navigationController.dart';
 
 import 'package:job_application/ui/page/getstart-page.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => JobProvider(),
+      create: (_) => UserProvider(),
       child: ScreenUtilInit(
         designSize: const Size(430, 932),
         minTextAdapt: true,

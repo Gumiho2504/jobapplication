@@ -5,14 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:job_application/ui/component/company-logo.dart';
 import 'package:job_application/ui/style/style.dart';
 
-class Experience extends StatefulWidget {
-  const Experience({super.key});
+class ExperiencePageView extends StatefulWidget {
+  const ExperiencePageView({super.key});
 
   @override
-  State<Experience> createState() => _ExperienceState();
+  State<ExperiencePageView> createState() => _ExperiencePageViewState();
 }
 
-class _ExperienceState extends State<Experience> {
+class _ExperiencePageViewState extends State<ExperiencePageView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
