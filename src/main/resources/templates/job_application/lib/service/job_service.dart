@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:job_application/model/job.dart';
 
 class JobService {
-  static const String baseUrl = 'http://localhost:8080/api/jobs';
+  static const String baseUrl = 'http://localhost:8080/api/';
 
   Future<List<Job>> fetchJobs() async {
     final response = await http.get(Uri.parse(baseUrl));
@@ -61,4 +61,7 @@ class JobService {
       throw Exception('Failed to delete job');
     }
   }
+
+
+
 }

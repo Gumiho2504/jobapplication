@@ -6,10 +6,12 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/job.dart';
+import 'package:job_application/provider/job_provider.dart';
 import 'package:job_application/ui/component/home-page/job-box.dart';
 import 'package:job_application/ui/component/home-page/section.dart';
 import 'package:job_application/ui/page/search-page.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   int currentJobTyperSelect = 0;
   @override
   Widget build(BuildContext context) {
+    final jobProvider = Provider.of<JobProvider>(context);
     ScreenUtil.init(
       context,
       designSize: Size(430, 932),
@@ -171,10 +174,16 @@ class _HomePageState extends State<HomePage> {
                 section("Suggested Jobs"),
                 SizedBox(
                     height: 216.h,
-                    child: ListView.builder(
+                    child: jobProvider.isLoading
+                        ? const Center(child: CircularProgressIndicator()) :
+                    ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) => const JobBox())),
+                        itemCount: jobProvider.jobs.length,
+                        itemBuilder: (context, index) {
+                          Job job = jobProvider.jobs[index];
+                          return JobBox(job: job,);
+    }
+    )),
                 section("Recent Jobs"),
                 SizedBox(
                     height: 45.h,
@@ -197,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 2,
                         itemBuilder: (context, index) => Padding(
                               padding: EdgeInsets.only(bottom: 10),
-                              child: JobBox(),
+                             // child: JobBox(),
                             )),
                   ),
                 ),

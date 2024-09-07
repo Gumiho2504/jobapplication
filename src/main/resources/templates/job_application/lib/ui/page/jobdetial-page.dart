@@ -10,53 +10,54 @@ import 'package:job_application/ui/component/detial-page/similarjob-detail.dart'
 import 'package:job_application/ui/page/editjob-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
-class JobDetailScreen extends StatelessWidget {
-  final Job job;
-
-  JobDetailScreen({required this.job});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(job.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EditJobPage(jobData: job)),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Title: ${job.title}', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            Text('Description: ${job.description}',
-                style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            Text('Location: ${job.location}', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            Text('Company: ${job.company}', style: TextStyle(fontSize: 18)),
-            SizedBox(height: 8),
-            Text('Type: ${job.type}', style: TextStyle(fontSize: 18)),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class JobDetailScreen extends StatelessWidget {
+//   final Job job;
+//
+//   JobDetailScreen({required this.job});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(job.title),
+//         actions: <Widget>[
+//           IconButton(
+//             icon: Icon(Icons.edit),
+//             onPressed: () {
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                     builder: (context) => EditJobPage(jobData: job)),
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//       body: Padding(
+//         padding: EdgeInsets.all(16.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text('Title: ${job.title}', style: TextStyle(fontSize: 18)),
+//             SizedBox(height: 8),
+//             Text('Description: ${job.description}',
+//                 style: TextStyle(fontSize: 18)),
+//             SizedBox(height: 8),
+//             Text('Location: ${job.location}', style: TextStyle(fontSize: 18)),
+//             SizedBox(height: 8),
+//             Text('Company: ${job.company}', style: TextStyle(fontSize: 18)),
+//             SizedBox(height: 8),
+//             Text('Type: ${job.type}', style: TextStyle(fontSize: 18)),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class JobDetailPage extends StatefulWidget {
-  const JobDetailPage({super.key});
+  final Job job;
+  const JobDetailPage({super.key,required this.job});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
@@ -149,7 +150,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                             height: 60.h,
                           ),
                           Text(
-                            "UI Designer",
+                            "${widget.job.title}",
                             style: GoogleFonts.poppins(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,
@@ -267,7 +268,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                         radius: 50,
                         backgroundColor: primaryColor,
                         child: Text(
-                          "B.",
+                          "${widget.job.title[0]}.",
                           style: GoogleFonts.poppins(
                               color: backgroundColor,
                               fontWeight: FontWeight.bold,

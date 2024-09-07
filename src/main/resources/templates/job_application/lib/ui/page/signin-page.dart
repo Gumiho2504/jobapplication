@@ -192,7 +192,7 @@ class _SignInPageState extends State<SignInPage> {
                     String _email = email.text;
                     String _password = passwords.text;
 
-                    User user = User(name: name, email: _email, password: _password);
+                    User user = User(id: null,name: name, email: _email, password: _password,saveJobs: []);
                     print("${user.name} | ${user.email} | ${user.password}");
                 userProvider.userSignIn(user);
 

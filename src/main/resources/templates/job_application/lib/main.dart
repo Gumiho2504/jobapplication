@@ -18,21 +18,26 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserProvider(),
-      child: ScreenUtilInit(
-        designSize: const Size(430, 932),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) => GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Job Application',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
+    return
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => UserProvider()),
+          ChangeNotifierProvider(create: (_) => JobProvider())
+        ],
+        child: ScreenUtilInit(
+          designSize: const Size(430, 932),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) => GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Job Application',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: const GetStartPage(),
           ),
-          home: const GetStartPage(),
         ),
-      ),
-    );
+
+      );
   }
 }

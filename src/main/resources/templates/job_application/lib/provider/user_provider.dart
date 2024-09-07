@@ -33,6 +33,16 @@ class UserProvider extends ChangeNotifier{
       _user = await userService.userLogin(email,password);
       notifyListeners();
    }
-   
+
+   Future<void> addJobToUser(int userId, int jobId) async{
+      _user =  await userService.addJobToUser(userId, jobId);
+      notifyListeners();
+   }
+
+   Future<void> removeJobFromUser(int userId, int jobId) async {
+      _user = await userService.removeJobFromUser(userId, jobId);
+     notifyListeners();
+   }
+
 
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:job_application/model/job.dart';
 import 'package:job_application/ui/page/jobdetial-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
@@ -10,6 +11,7 @@ class SimilarJobDetial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Job similarJob = Job(id: 9, title: "dfff");
     return Container(
         child: SingleChildScrollView(
       child: Column(
@@ -23,7 +25,7 @@ class SimilarJobDetial extends StatelessWidget {
           child: ListTile(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => JobDetailPage()));
+                  MaterialPageRoute(builder: (context) => JobDetailPage(job: similarJob,)));
             },
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(

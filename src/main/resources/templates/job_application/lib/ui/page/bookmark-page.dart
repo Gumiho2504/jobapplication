@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:job_application/ui/component/bookmark-page/job-bookmark-box.dart';
+import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
+import '../../model/job.dart';
+
 class BookMarkPage extends StatefulWidget {
+
   const BookMarkPage({super.key});
 
   @override
@@ -14,6 +18,7 @@ class BookMarkPage extends StatefulWidget {
 class _BookMarkPageState extends State<BookMarkPage> {
   @override
   Widget build(BuildContext context) {
+    final Job job = Job(id: 0, title: "eer");
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.h),
@@ -37,7 +42,11 @@ class _BookMarkPageState extends State<BookMarkPage> {
               child: Container(
                 child: SingleChildScrollView(
                   child: Column(
-                    children: List.generate(4, (int) => JobBookMarkBox()),
+                    children: List.generate(userProvider.user.saveJobs!.length, (int) {
+                      final jobs = userProvider.user.saveJobs;
+                      return
+                      JobBookMarkBox(job: jobs![int]);
+                    }),
                   ),
                 ),
               ),

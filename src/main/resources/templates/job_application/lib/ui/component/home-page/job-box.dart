@@ -4,11 +4,16 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:job_application/model/job.dart';
+import 'package:job_application/provider/job_provider.dart';
 import 'package:job_application/ui/page/jobdetial-page.dart';
+import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
 
 class JobBox extends StatefulWidget {
-  const JobBox({super.key});
+  final Job job;
+  const JobBox({super.key, required this.job});
 
   @override
   State<JobBox> createState() => _JobBoxState();
@@ -16,8 +21,19 @@ class JobBox extends StatefulWidget {
 
 class _JobBoxState extends State<JobBox> {
   bool isBookMark = false;
+
+  @override
+  void initState() {
+    super.initState();
+    print("job boxz");
+    List<Job> jobs = userProvider.user.saveJobs!;
+    jobs.forEach((j) => isBookMark = (j.id == widget.job.id));
+    //if(widget.job.id == )
+
+  }
   @override
   Widget build(BuildContext context) {
+   
     ScreenUtil.init(
       context,
       designSize: Size(430, 932),
@@ -28,7 +44,7 @@ class _JobBoxState extends State<JobBox> {
   jobBox() => GestureDetector(
         onTap: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => JobDetailPage()));
+              .push(MaterialPageRoute(builder: (context) => JobDetailPage(job: widget.job,)));
         },
         child: Container(
           padding: EdgeInsets.all(10),
@@ -63,12 +79,19 @@ class _JobBoxState extends State<JobBox> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            "UI Designer",
-                            style: GoogleFonts.poppins(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18.h),
+  //job title                        
+                          Container(
+                            width: 171.w,
+                            height: 26.h,
+                            //color: Colors.amber,
+                              child: Text(
+                                "${widget.job.title}",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18.h),
+
+                            ),
                           ),
                           Text(
                             "Briosous Solution",
@@ -82,14 +105,19 @@ class _JobBoxState extends State<JobBox> {
                     ],
                   ),
 
-                  // BookMark Button
+ // BookMark Button
 
                   IconButton(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(0),
                       onPressed: () {
+                        //final jobProvide = Provider.of<JobProvider>(context);
                         setState(() {
+
                           isBookMark = !isBookMark;
+                          isBookMark ? userProvider.addJobToUser(userProvider.user.id!, widget.job.id) :
+                          userProvider.removeJobFromUser(userProvider.user.id!, widget.job.id);
+
                         });
                       },
                       iconSize: 30.h,
@@ -204,7 +232,7 @@ class _JobBoxState extends State<JobBox> {
         decoration: BoxDecoration(
             color: primaryColor, borderRadius: BorderRadius.circular(6)),
         child: Text(
-          "B.",
+          "${widget.job.title[0]}.",
           style: GoogleFonts.poppins(
               color: backgroundColor,
               fontSize: 28,

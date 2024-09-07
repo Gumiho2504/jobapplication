@@ -5,8 +5,11 @@ import 'package:iconsax/iconsax.dart';
 import 'package:job_application/ui/page/jobdetial-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
+import '../../../model/job.dart';
+
 class JobBookMarkBox extends StatefulWidget {
-  const JobBookMarkBox({super.key});
+  final Job job;
+  const JobBookMarkBox({super.key,required this.job});
 
   @override
   State<JobBookMarkBox> createState() => _JobBookMarkBoxState();
@@ -18,7 +21,7 @@ class _JobBookMarkBoxState extends State<JobBookMarkBox> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => JobDetailPage()));
+            .push(MaterialPageRoute(builder: (context) => JobDetailPage(job: widget.job,)));
       },
       child: Container(
         height: 80.h,
@@ -29,7 +32,7 @@ class _JobBookMarkBoxState extends State<JobBookMarkBox> {
         )),
         child: Row(
           children: [
-            profile("A.", primaryColor),
+            profile("${widget.job.title[0]}.", primaryColor),
             SizedBox(
               width: 15.w,
             ),
@@ -44,7 +47,7 @@ class _JobBookMarkBoxState extends State<JobBookMarkBox> {
                       children: [
                         //Job Title
                         Text(
-                          "UI UX Designer",
+                          "${widget.job.title}",
                           style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontSize: 18.h,

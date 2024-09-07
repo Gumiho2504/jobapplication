@@ -11,41 +11,41 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
-  //int id;
+  int? id;
   String name;
   //String lastName;
   String email;
   String password;
-  //List<Job>? saveJobs;
+  List<Job>? saveJobs;
   //UserDetail userDetail;
 
   User({
-    //required this.id;
+    required this.id,
     required this.name,
     //required this.lastName,
     required this.email,
     required this.password,
-    //required this.saveJobs,
+    required this.saveJobs,
     //required this.userDetail,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    //id: json["id"],
+    id: json["id"],
     name: json["name"],
     //lastName: json["lastName"],
     email: json["email"],
     password: json["password"],
-    //saveJobs: List<Job>.from(json["saveJobs"].map((x) => Job.fromJson(x))),
+    saveJobs: List<Job>.from(json["saveJobs"].map((x) => Job.fromJson(x))),
     //userDetail: UserDetail.fromJson(json["userDetail"]),
   );
 
   Map<String, dynamic> toJson() => {
-    //"id": id,
+    "id": id,
     "name": name,
     //"lastName": lastName,
     "email": email,
     "password": password,
-    //"saveJobs": List<dynamic>.from(saveJobs!.map((x) => x.toJson())),
+    "saveJobs": List<dynamic>.from(saveJobs!.map((x) => x.toJson())),
     //"userDetail": userDetail.toJson(),
   };
 }
