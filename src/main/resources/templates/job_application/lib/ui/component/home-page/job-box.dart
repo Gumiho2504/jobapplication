@@ -21,19 +21,23 @@ class JobBox extends StatefulWidget {
 
 class _JobBoxState extends State<JobBox> {
   bool isBookMark = false;
-
   @override
   void initState() {
     super.initState();
-    print("job boxz");
-    List<Job> jobs = userProvider.user.saveJobs!;
-    jobs.forEach((j) => isBookMark = (j.id == widget.job.id));
-    //if(widget.job.id == )
-
+   // Ensure the context is available and fetch the provider here
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (userProvider.user.saveJobs != null && widget.job != null) {
+        setState(() {
+          isBookMark = userProvider.user.saveJobs!.any((j) => j.id == widget.job.id);
+        });
+      }
+    });
   }
+
+
   @override
   Widget build(BuildContext context) {
-   
+
     ScreenUtil.init(
       context,
       designSize: Size(430, 932),
@@ -79,7 +83,7 @@ class _JobBoxState extends State<JobBox> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-  //job title                        
+  //job title
                           Container(
                             width: 171.w,
                             height: 26.h,

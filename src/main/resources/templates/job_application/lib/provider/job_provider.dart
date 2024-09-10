@@ -15,6 +15,7 @@ class JobProvider with ChangeNotifier {
   }
 
   Future<void> fetchJobs() async {
+    print("fetcjjob");
     _isLoading = true;
     notifyListeners();
     _jobs = await _jobService.fetchJobs();

@@ -8,6 +8,7 @@ import 'package:job_application/ui/component/detial-page/about-detail.dart';
 import 'package:job_application/ui/component/detial-page/company-detail.dart';
 import 'package:job_application/ui/component/detial-page/similarjob-detail.dart';
 import 'package:job_application/ui/page/editjob-page.dart';
+import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
 // class JobDetailScreen extends StatelessWidget {
@@ -65,6 +66,7 @@ class JobDetailPage extends StatefulWidget {
 
 class _JobDetailPageState extends State<JobDetailPage> {
   final labelArray = ["About", "Company", "Similar Jobs"];
+  bool isBookMark = false;
   List<Widget> page = [
     const AboutDetail(),
     const CompanyAtDetail(),
@@ -73,6 +75,19 @@ class _JobDetailPageState extends State<JobDetailPage> {
   int currentSelect = 0;
   int activePage = 0;
   final pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (userProvider.user.saveJobs != null && widget.job != null) {
+        setState(() {
+          isBookMark = userProvider.user.saveJobs!.any((j) => j.id == widget.job.id);
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -400,8 +415,15 @@ class _JobDetailPageState extends State<JobDetailPage> {
                       style: IconButton.styleFrom(
                           padding: EdgeInsets.all(10.h),
                           backgroundColor: backgroundColor,
-                          side: BorderSide(width: 0.01, color: Colors.grey)),
-                      onPressed: () {},
+                          side: BorderSide(width: 0.01, color: isBookMark ? primaryColor : Colors.grey)),
+                      onPressed: () {
+                        setState(() {
+                          isBookMark = !isBookMark;
+                          isBookMark ? userProvider.addJobToUser(userProvider.user.id!, widget.job.id) :
+                          userProvider.removeJobFromUser(userProvider.user.id!, widget.job.id);
+                        });
+                      },
+                      color: isBookMark ? primaryColor : Colors.grey,
                       icon: Icon(Iconsax.bookmark)),
                   SizedBox(
                     width: 10.w,

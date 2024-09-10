@@ -16,6 +16,19 @@ class BookMarkPage extends StatefulWidget {
 }
 
 class _BookMarkPageState extends State<BookMarkPage> {
+ late List<Job> saveJob = [];
+  @override
+  void initState() {
+    super.initState();
+    // Ensure the context is available and fetch the provider here
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (userProvider.user.saveJobs != null) {
+        setState(() {
+          saveJob = userProvider.user.saveJobs!;
+        });
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final Job job = Job(id: 0, title: "eer");
@@ -42,12 +55,17 @@ class _BookMarkPageState extends State<BookMarkPage> {
               child: Container(
                 child: SingleChildScrollView(
                   child: Column(
-                    children: List.generate(userProvider.user.saveJobs!.length, (int) {
-                      final jobs = userProvider.user.saveJobs;
-                      return
-                      JobBookMarkBox(job: jobs![int]);
-                    }),
-                  ),
+                    children: userProvider.user.saveJobs != null && userProvider.user.saveJobs!.isNotEmpty
+                        ? List.generate(userProvider.user.saveJobs!.length, (index) {
+                      final job = userProvider.user.saveJobs![index];
+                      return JobBookMarkBox(job: job);
+                    })
+                        : [
+                      Center(
+                        child: Text('No bookmarked jobs found'),
+                      ),
+                    ],
+                  )
                 ),
               ),
             )

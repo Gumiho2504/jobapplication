@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => NavigetionPage(user: userProvider.user)));
     }catch(e){
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Failed to register'),
       ));

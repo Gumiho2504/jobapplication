@@ -24,7 +24,10 @@ class UserService {
       );
       print("${user.name} | ${user.email} | ${user.password}");
       print("post - ${res.statusCode}");
-      if(res.statusCode == 200){
+      if(res.statusCode == 201){
+         print("body - ${res.body}");
+         User u = User.fromJson(jsonDecode(res.body));
+         print(  " savejob - ${  u.saveJobs!.length}");
          return User.fromJson(jsonDecode(res.body));
       }else{
          throw Exception("field to create user ");
@@ -42,6 +45,9 @@ class UserService {
       );
 
       if(res.statusCode == 200){
+         print("login + ${res.body}");
+         User u = User.fromJson(jsonDecode(res.body));
+         print(  " savejob - ${  u.saveJobs!.length}");
          return User.fromJson(jsonDecode(res.body));
       }else{
          throw Exception("field to login!");
@@ -55,29 +61,35 @@ class UserService {
       try {
          final response = await http.post(url);
 
-         if (response.statusCode == 200) {
-            // If the response is successful, you can parse the user data here if needed.
-            final user = jsonDecode(response.body);
-            return User.fromJson(user);
-            print('Job saved successfully for User: $user');
+         print("Response status: ${response.statusCode}");
+         print("Response body: ${response.body}");
 
-            // Update your provider's state here if necessary
-            // For example, notifyListeners();
+         if (response.statusCode == 200) {
+            final userData = jsonDecode(response.body);
+
+            // Deserialize the user data into a User object
+            User user = User.fromJson(userData);
+
+            // Safely check if `saveJobs` is not null
+            if (user.saveJobs != null) {
+               print("savejob - ${user.saveJobs!.length}");
+            } else {
+               print("No jobs saved.");
+            }
+
+            return user;
          } else if (response.statusCode == 404) {
             throw Exception("User not found");
-            // Handle user not found
-            print("User not found");
          } else {
-            // Handle other errors
             throw Exception("Failed to save job to user. Status code: ${response.statusCode}");
-            print("Failed to save job to user. Status code: ${response.statusCode}");
          }
-
       } catch (error) {
-         throw Exception(error);
+         // Add more detailed error logging
          print("Error occurred: $error");
+         throw Exception("An error occurred while saving the job: $error");
       }
    }
+
 
 
    Future<User> removeJobFromUser(int userId, int jobId) async {
@@ -87,20 +99,14 @@ class UserService {
          final response = await http.delete(url);
 
          if (response.statusCode == 200) {
-            // Successfully removed job from user
             final userData = json.decode(response.body);
-
-            // Return the User object parsed from the JSON response
             return User.fromJson(userData);
          } else if (response.statusCode == 404) {
-            // Handle the case when the user or job is not found
             throw Exception('User or job not found');
          } else {
-            // Handle other status codes appropriately
             throw Exception('Failed to remove job from user. Status Code: ${response.statusCode}');
          }
       } catch (e) {
-         // Log and rethrow the exception to handle it higher up in the UI
          print("Error removing job from user: $e");
          throw Exception('An error occurred while removing the job: $e');
       }

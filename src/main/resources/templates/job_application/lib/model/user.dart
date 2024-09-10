@@ -13,40 +13,38 @@ String userToJson(User data) => json.encode(data.toJson());
 class User {
   int? id;
   String name;
-  //String lastName;
   String email;
   String password;
   List<Job>? saveJobs;
-  //UserDetail userDetail;
 
   User({
     required this.id,
     required this.name,
-    //required this.lastName,
     required this.email,
     required this.password,
     required this.saveJobs,
-    //required this.userDetail,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"],
-    //lastName: json["lastName"],
     email: json["email"],
     password: json["password"],
-    saveJobs: List<Job>.from(json["saveJobs"].map((x) => Job.fromJson(x))),
-    //userDetail: UserDetail.fromJson(json["userDetail"]),
+    // Handle null `saveJob` safely
+    saveJobs: json["saveJobs"] != null
+        ? List<Job>.from(json["saveJobs"].map((x) => Job.fromJson(x)))
+        : [],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
-    //"lastName": lastName,
     "email": email,
     "password": password,
-    "saveJobs": List<dynamic>.from(saveJobs!.map((x) => x.toJson())),
-    //"userDetail": userDetail.toJson(),
+    // Ensure `saveJobs` is not null
+    "saveJobs": saveJobs != null
+        ? List<Job>.from(saveJobs!.map((x) => x.toJson()))
+        : [],
   };
 }
 

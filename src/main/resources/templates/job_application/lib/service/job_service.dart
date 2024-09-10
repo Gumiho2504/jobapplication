@@ -8,13 +8,18 @@ class JobService {
   Future<List<Job>> fetchJobs() async {
     final response = await http.get(Uri.parse(baseUrl));
     if (response.statusCode == 200) {
-      List<dynamic> body = jsonDecode(response.body);
-      List<Job> jobs = body.map((dynamic item) => Job.fromJson(item)).toList();
+      // Decode the JSON response and map each item to a Job object
+      List<dynamic> jobList = jsonDecode(response.body);
+
+      // Convert List<dynamic> to List<Job>
+      List<Job> jobs = jobList.map((job) => Job.fromJson(job)).toList();
+
       return jobs;
     } else {
       throw Exception('Failed to load jobs');
     }
   }
+
 
   Future<Job> fetchJobById(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/$id'));
