@@ -15,6 +15,7 @@ class User {
   String name;
   String email;
   String password;
+  Profile? profile;
   List<Job>? saveJobs;
 
   User({
@@ -22,7 +23,8 @@ class User {
     required this.name,
     required this.email,
     required this.password,
-    required this.saveJobs,
+    this.profile,  // Nullable profile
+    this.saveJobs, // Nullable saveJobs list
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -30,7 +32,9 @@ class User {
     name: json["name"],
     email: json["email"],
     password: json["password"],
-    // Handle null `saveJob` safely
+    // Handle null `profile` safely
+    profile: json["profile"] != null ? Profile.fromJson(json["profile"]) : null,
+    // Handle null `saveJobs` safely
     saveJobs: json["saveJobs"] != null
         ? List<Job>.from(json["saveJobs"].map((x) => Job.fromJson(x)))
         : [],
@@ -41,46 +45,78 @@ class User {
     "name": name,
     "email": email,
     "password": password,
+    // Ensure `profile` is not null
+    "profile": profile?.toJson(),
     // Ensure `saveJobs` is not null
     "saveJobs": saveJobs != null
-        ? List<Job>.from(saveJobs!.map((x) => x.toJson()))
+        ? List<dynamic>.from(saveJobs!.map((x) => x.toJson()))
         : [],
   };
 }
 
 
 
+class Profile {
+  int? id;
+  String title;
+  String phoneNumber;
+  List<Skill>? skills;
+  List<Education>? educations;
+  List<Experience>? experiences;
 
-
-class UserDetail {
-  int id;
-  String description;
-  List<Education> educations;
-  List<Skill> skills;
-  List<Experience> experiences;
-
-  UserDetail({
-    required this.id,
-    required this.description,
-    required this.educations,
-    required this.skills,
-    required this.experiences,
+  Profile({
+    this.id,
+    required this.title,
+    required this.phoneNumber,
+    this.skills,
+    this.educations,
+    this.experiences,
   });
 
-  factory UserDetail.fromJson(Map<String, dynamic> json) => UserDetail(
+  factory Profile.fromJson(Map<String, dynamic> json) => Profile(
     id: json["id"],
-    description: json["description"],
-    educations: List<Education>.from(json["educations"].map((x) => Education.fromJson(x))),
-    skills: List<Skill>.from(json["skills"].map((x) => Skill.fromJson(x))),
-    experiences: List<Experience>.from(json["experiences"].map((x) => Experience.fromJson(x))),
+    title: json["title"],
+    phoneNumber: json["phoneNumber"],
+    skills: json["skills"] != null
+        ? List<Skill>.from(json["skills"].map((x) => Skill.fromJson(x)))
+        : [],
+    educations: json["educations"] != null
+        ? List<Education>.from(json["educations"].map((x) => Education.fromJson(x)))
+        : [],
+    experiences: json["experiences"] != null
+        ? List<Experience>.from(json["experiences"].map((x) => Experience.fromJson(x)))
+        : [],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "description": description,
-    "educations": List<dynamic>.from(educations.map((x) => x.toJson())),
-    "skills": List<dynamic>.from(skills.map((x) => x.toJson())),
-    "experiences": List<dynamic>.from(experiences.map((x) => x.toJson())),
+    "title": title,
+    "phoneNumber": phoneNumber,
+    "skills": skills != null
+        ? List<dynamic>.from(skills!.map((x) => x.toJson()))
+        : [],
+    "educations": educations != null
+        ? List<dynamic>.from(educations!.map((x) => x.toJson()))
+        : [],
+    "experiences": experiences != null
+        ? List<dynamic>.from(experiences!.map((x) => x.toJson()))
+        : [],
+  };
+}
+
+class Skill {
+  int id;
+  String title;
+  Skill({required this.id, required this.title});
+
+  factory Skill.fromJson(Map<String, dynamic> json) => Skill(
+    id: json["id"],
+    title: json["title"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "title": title,
   };
 }
 
@@ -88,8 +124,8 @@ class Education {
   int id;
   String school;
   String field;
-  String startDate;
-  String endDate;
+  DateTime startDate;
+  DateTime endDate;
   String description;
 
   Education({
@@ -105,8 +141,8 @@ class Education {
     id: json["id"],
     school: json["school"],
     field: json["field"],
-    startDate: json["startDate"],
-    endDate: json["endDate"],
+    startDate: DateTime.parse(json["startDate"]),
+    endDate: DateTime.parse(json["endDate"]),
     description: json["description"],
   );
 
@@ -114,8 +150,8 @@ class Education {
     "id": id,
     "school": school,
     "field": field,
-    "startDate": startDate,
-    "endDate": endDate,
+    "startDate": startDate.toIso8601String(),
+    "endDate": endDate.toIso8601String(),
     "description": description,
   };
 }
@@ -125,8 +161,8 @@ class Experience {
   String title;
   String description;
   String company;
-  String startDate;
-  String endDate;
+  DateTime startDate;
+  DateTime endDate;
   bool isWorking;
 
   Experience({
@@ -144,8 +180,8 @@ class Experience {
     title: json["title"],
     description: json["description"],
     company: json["company"],
-    startDate: json["startDate"],
-    endDate: json["endDate"],
+    startDate: DateTime.parse(json["startDate"]),
+    endDate: DateTime.parse(json["endDate"]),
     isWorking: json["isWorking"],
   );
 
@@ -154,28 +190,18 @@ class Experience {
     "title": title,
     "description": description,
     "company": company,
-    "startDate": startDate,
-    "endDate": endDate,
+    "startDate": startDate.toIso8601String(),
+    "endDate": endDate.toIso8601String(),
     "isWorking": isWorking,
   };
 }
 
-class Skill {
-  int id;
-  String name;
 
-  Skill({
-    required this.id,
-    required this.name,
-  });
 
-  factory Skill.fromJson(Map<String, dynamic> json) => Skill(
-    id: json["id"],
-    name: json["name"],
-  );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
-}
+
+
+
+
+
+

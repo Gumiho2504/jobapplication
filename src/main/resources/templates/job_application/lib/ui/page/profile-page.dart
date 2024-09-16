@@ -10,10 +10,12 @@ import 'package:job_application/ui/component/profile-page/education-profile.dart
 import 'package:job_application/ui/component/profile-page/experience-profile.dart';
 import 'package:job_application/ui/component/profile-page/skill-profile.dart';
 import 'package:job_application/ui/page/explore-page.dart';
+import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/user_provider.dart';
+import '../component/profile-page/ProfileForm.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;
@@ -27,16 +29,57 @@ class _ProfilePageState extends State<ProfilePage> {
   int currentSelect = 0;
   int activePage = 0;
   final barLabel = ["About", "Experiences", "Educations", "Skills"];
-  final page = [
-    const AboutAtProfile(),
-    const ExperiencePageView(),
-    const EducationPageView(),
-    const SkillsPageView()
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Check if the profile is null and show the profile form
+      if (widget.user.profile == null) {
+        showProfileForm(context);
+      }
+   });
+  }
+
+  // Method to show the Profile Form as a bottom sheet
+  void showProfileForm(BuildContext context) {
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // This makes the bottom sheet take full height
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          expand: false,
+          builder: (_, controller) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: ProfileForm(onSubmit: (title, phoneNumber) {
+                // Update the user's profile with the submitted values
+               // setState(() {
+                  Profile profile =  Profile(
+                      title: title,
+                      phoneNumber: phoneNumber
+                  );
+                  userProvider.userAddProfle(widget.user.id!, profile);
+
+              }),
+            );
+          },
+        );
+      },
+    );
+  }
   final pageController = PageController();
   @override
   Widget build(BuildContext context) {
-
+    final page = [
+      AboutAtProfile(),
+      ExperiencePageView(),
+      EducationPageView(),
+      SkillsPageView(),
+    ];
     return SafeArea(
       child: Stack(
         children: [
@@ -304,3 +347,4 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 }
+

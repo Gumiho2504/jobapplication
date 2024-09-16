@@ -56,5 +56,21 @@ class UserProvider extends ChangeNotifier{
      notifyListeners();
    }
 
+   Future<void> addSkillToUser(int userId,int skillId) async{
+      _user = await userService.addSkillToUser(userId, skillId);
+      notifyListeners();
+   }
+
+   Future<void> deletedSkillFromUser(int userId,int skillId) async{
+      _user = await userService.removeSkillFromUser(userId, skillId);
+      notifyListeners();
+   }
+
+   Future<void> userAddProfle(int userId ,Profile profile) async {
+      _user = await userService.addProfileToUser(userId, profile);
+      notifyListeners();
+   }
+
+
 
 }

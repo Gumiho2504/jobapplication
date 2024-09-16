@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:job_application/controller/SkillDropdownScreen.dart';
+import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
 
+import '../../../model/user.dart';
+
 class SkillsPageView extends StatefulWidget {
+  //final List<Skill> skills;
   const SkillsPageView({super.key});
 
   @override
@@ -19,13 +24,20 @@ class _SkillsPageViewState extends State<SkillsPageView> {
           SizedBox(
             height: 20.h,
           ),
-          SkillsBox("Recruiting and talent acquisition"),
-          SkillsBox("Financial analysis"),
+          Column(
+            children:List.generate(userProvider.user.profile!.skills!.length,(index){
+              final skill = userProvider.user.profile!.skills![index];
+              return SkillsBox(skill);
+            }),
+          ),
+
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: backgroundColor,
                   side: BorderSide(width: 2, color: primaryColor)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SkillDropdownScreen()));
+              },
               child: Container(
                   alignment: Alignment.center,
                   width: double.infinity,
@@ -46,7 +58,7 @@ class _SkillsPageViewState extends State<SkillsPageView> {
     );
   }
 
-  SkillsBox(String skillTitle) => Stack(
+  SkillsBox(Skill skill) => Stack(
         children: [
           IntrinsicHeight(
             child: Container(
@@ -73,7 +85,7 @@ class _SkillsPageViewState extends State<SkillsPageView> {
                         children: [
                           // Job title
                           Text(
-                            skillTitle,
+                            skill.title,
                             style: GoogleFonts.poppins(
                                 fontSize: 20.h,
                                 fontWeight: FontWeight.w600,
@@ -95,7 +107,14 @@ class _SkillsPageViewState extends State<SkillsPageView> {
                       padding: const EdgeInsets.all(0),
                       side: BorderSide(width: 1, color: Colors.redAccent),
                       backgroundColor: Colors.transparent),
-                  onPressed: () {},
+                  onPressed: () {
+                    print("${skill.id}-${userProvider.user.id!}");
+                    userProvider.deletedSkillFromUser(userProvider.user.id!, skill.id);
+                    setState(() {
+                      //widget.skills.remove(skill);
+                    });
+
+                  },
                   child: Text(
                     "Remove",
                     style: GoogleFonts.poppins(
