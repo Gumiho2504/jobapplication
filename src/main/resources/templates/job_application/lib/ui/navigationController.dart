@@ -18,8 +18,8 @@ import '../model/user.dart';
 import '../provider/job_provider.dart';
 
 class NavigetionPage extends StatefulWidget {
-  final User user;
-  const NavigetionPage({super.key, required this.user});
+
+  const NavigetionPage({super.key});
 
   @override
   State<NavigetionPage> createState() => _NavigetionPageState();
@@ -36,7 +36,7 @@ class _NavigetionPageState extends State<NavigetionPage> {
       HomePage(),
       ExplorationPage(),
       BookMarkPage(),
-      ProfilePage(user: widget.user)
+      ProfilePage()
     ];
     ScreenUtil.init(
       context,

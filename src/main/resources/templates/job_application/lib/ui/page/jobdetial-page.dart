@@ -4,12 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/job.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/component/detial-page/about-detail.dart';
 import 'package:job_application/ui/component/detial-page/company-detail.dart';
 import 'package:job_application/ui/component/detial-page/similarjob-detail.dart';
 import 'package:job_application/ui/page/editjob-page.dart';
 import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
 
 // class JobDetailScreen extends StatelessWidget {
 //   final Job job;
@@ -58,7 +60,8 @@ import 'package:job_application/ui/style/style.dart';
 
 class JobDetailPage extends StatefulWidget {
   final Job job;
-  const JobDetailPage({super.key,required this.job});
+  late   bool isBookMark;
+   JobDetailPage({super.key,required this.job, required this.isBookMark});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
@@ -66,7 +69,7 @@ class JobDetailPage extends StatefulWidget {
 
 class _JobDetailPageState extends State<JobDetailPage> {
   final labelArray = ["About", "Company", "Similar Jobs"];
-  bool isBookMark = false;
+
   List<Widget> page = [
     const AboutDetail(),
     const CompanyAtDetail(),
@@ -76,18 +79,18 @@ class _JobDetailPageState extends State<JobDetailPage> {
   int activePage = 0;
   final pageController = PageController();
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (userProvider.user.saveJobs != null && widget.job != null) {
-        setState(() {
-          isBookMark = userProvider.user.saveJobs!.any((j) => j.id == widget.job.id);
-        });
-      }
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (userProvider.user.saveJobs != null && widget.job != null) {
+  //       setState(() {
+  //         isBookMark = userProvider.user.saveJobs!.any((j) => j.id == widget.job.id);
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -415,15 +418,19 @@ class _JobDetailPageState extends State<JobDetailPage> {
                       style: IconButton.styleFrom(
                           padding: EdgeInsets.all(10.h),
                           backgroundColor: backgroundColor,
-                          side: BorderSide(width: 0.01, color: isBookMark ? primaryColor : Colors.grey)),
+                          side: BorderSide(width: 0.01, color: widget.isBookMark ? primaryColor : Colors.grey)),
                       onPressed: () {
+                        final userP = Provider.of<UserProvider>(context,listen: false);
                         setState(() {
-                          isBookMark = !isBookMark;
-                          isBookMark ? userProvider.addJobToUser(userProvider.user.id!, widget.job.id) :
-                          userProvider.removeJobFromUser(userProvider.user.id!, widget.job.id);
+                          widget.isBookMark = !widget.isBookMark;
+                          if (widget.isBookMark) {
+                            userP.addJobToUser(userP.user!.id!, widget.job.id);
+                          } else {
+                            userP.removeJobFromUser(userP.user!.id!, widget.job.id);
+                          }
                         });
                       },
-                      color: isBookMark ? primaryColor : Colors.grey,
+                      color: widget.isBookMark ? primaryColor : Colors.grey,
                       icon: Icon(Iconsax.bookmark)),
                   SizedBox(
                     width: 10.w,

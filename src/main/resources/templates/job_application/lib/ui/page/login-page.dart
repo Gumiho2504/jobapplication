@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:job_application/model/job.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/navigationController.dart';
 import 'package:job_application/ui/page/signin-page.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,20 +21,24 @@ class _LoginPageState extends State<LoginPage> {
   final passwords = TextEditingController();
   final _keyForm = GlobalKey<FormState>();
   bool isShow = true;
-  void login(String email,String password) async {
-    try {
-      await userProvider.userLogin(email, password);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => NavigetionPage(user: userProvider.user)));
-    }catch(e){
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Failed to register'),
-      ));
-    }
-  }
+  // void login(String email,String password) async {
+  //   try {
+  //     await userProvider.userLogin(email, password);
+  //     Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //         builder: (context) => NavigetionPage(user: userProvider.user)));
+  //   }catch(e){
+  //     print(e);
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //         content: Text('Failed to register'),
+  //     ));
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
+    UserProvider _userProvider = Provider.of<UserProvider>(context);
+    void Login(){
+
+    }
     return Scaffold(
         body: Form(
       key: _keyForm,
@@ -137,11 +143,21 @@ class _LoginPageState extends State<LoginPage> {
             height: 20,
           ),
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_keyForm.currentState!.validate()) {
                   String _email = email.text;
                   String _password = passwords.text;
-                  login(_email, _password);
+                  //login(_email, _password);
+                    try {
+                      await _userProvider.userLogin(_email, _password);
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => NavigetionPage()));
+                    }catch(e){
+                      print(e);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Failed to register'),
+                      ));
+                    }
 
                   // Get.off(NavigetionPage(),transition: Transition.noTransition);
                 }

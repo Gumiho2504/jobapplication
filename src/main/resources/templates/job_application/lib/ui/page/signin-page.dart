@@ -8,6 +8,7 @@ import 'package:job_application/ui/page/home-page.dart';
 import 'package:job_application/ui/page/joblist-page.dart';
 import 'package:job_application/ui/page/login-page.dart';
 import 'package:job_application/ui/page/profile-page.dart';
+import 'package:provider/provider.dart';
 
 import '../navigationController.dart';
 
@@ -17,7 +18,7 @@ class SignInPage extends StatefulWidget {
   @override
   State<SignInPage> createState() => _SignInPageState();
 }
-final userProvider = UserProvider();
+
 class _SignInPageState extends State<SignInPage> {
 
   final userName = TextEditingController();
@@ -27,6 +28,7 @@ class _SignInPageState extends State<SignInPage> {
   bool isShow = true;
   @override
   Widget build(BuildContext context) {
+    final UserProvider userP = Provider.of<UserProvider>(context);
     return Scaffold(
         body: SingleChildScrollView(
       child: Form(
@@ -186,7 +188,7 @@ class _SignInPageState extends State<SignInPage> {
             ),
 
             ElevatedButton(
-                onPressed: () {
+                onPressed: ()  async {
                   if (_keyForm.currentState!.validate()) {
                     String name = userName.text;
                     String _email = email.text;
@@ -194,10 +196,10 @@ class _SignInPageState extends State<SignInPage> {
 
                     User user = User(id: null,name: name, email: _email, password: _password,saveJobs: []);
                     print("${user.name} | ${user.email} | ${user.password}");
-                userProvider.userSignIn(user);
+               await userP.userSignIn(user);
 
                  Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NavigetionPage(user: user)));
+                        builder: (context) => NavigetionPage()));
                   }
                 },
                 style: ElevatedButton.styleFrom(

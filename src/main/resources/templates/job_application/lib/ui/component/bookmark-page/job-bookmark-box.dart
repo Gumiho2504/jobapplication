@@ -21,7 +21,7 @@ class _JobBookMarkBoxState extends State<JobBookMarkBox> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => JobDetailPage(job: widget.job,)));
+            .push(MaterialPageRoute(builder: (context) => JobDetailPage(job: widget.job,isBookMark: true,)));
       },
       child: Container(
         height: 80.h,

@@ -25,7 +25,7 @@ class SimilarJobDetial extends StatelessWidget {
           child: ListTile(
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => JobDetailPage(job: similarJob,)));
+                  MaterialPageRoute(builder: (context) => JobDetailPage(job: similarJob,isBookMark: false,)));
             },
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(

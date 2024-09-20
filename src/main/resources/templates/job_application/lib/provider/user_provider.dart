@@ -71,6 +71,10 @@ class UserProvider extends ChangeNotifier{
       notifyListeners();
    }
 
+   Future<void> userPostEducation(int id,Education education) async{
+      _user = await userService.userPostEducation(id, education);
+      notifyListeners();
+   }
 
 
 }

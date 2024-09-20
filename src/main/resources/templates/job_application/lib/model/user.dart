@@ -121,7 +121,7 @@ class Skill {
 }
 
 class Education {
-  int id;
+  int? id;
   String school;
   String field;
   DateTime startDate;
@@ -129,7 +129,7 @@ class Education {
   String description;
 
   Education({
-    required this.id,
+    this.id,
     required this.school,
     required this.field,
     required this.startDate,

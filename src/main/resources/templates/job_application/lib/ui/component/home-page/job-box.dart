@@ -6,10 +6,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/job.dart';
 import 'package:job_application/provider/job_provider.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/page/jobdetial-page.dart';
 import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
 import 'package:provider/provider.dart';
+
+import '../../../model/user.dart';
 
 class JobBox extends StatefulWidget {
   final Job job;
@@ -21,19 +24,6 @@ class JobBox extends StatefulWidget {
 
 class _JobBoxState extends State<JobBox> {
   bool isBookMark = false;
-  @override
-  void initState() {
-    super.initState();
-   // Ensure the context is available and fetch the provider here
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (userProvider.user.saveJobs != null && widget.job != null) {
-        setState(() {
-          isBookMark = userProvider.user.saveJobs!.any((j) => j.id == widget.job.id);
-        });
-      }
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +32,19 @@ class _JobBoxState extends State<JobBox> {
       context,
       designSize: Size(430, 932),
     );
-    return jobBox();
+    return jobBox(context);
   }
 
-  jobBox() => GestureDetector(
-        onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => JobDetailPage(job: widget.job,)));
-        },
-        child: Container(
+  jobBox(BuildContext context) => GestureDetector(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => JobDetailPage(job: widget.job,isBookMark: isBookMark,)));
+      },
+      child: Consumer<UserProvider>(builder: (context, _userProvider, child){
+
+        User user = _userProvider.user!;
+        isBookMark = user.saveJobs!.any((j) => j.id == widget.job.id);
+        return Container(
           padding: EdgeInsets.all(10),
           margin: EdgeInsets.only(left: 20),
           height: 216.h,
@@ -83,17 +77,17 @@ class _JobBoxState extends State<JobBox> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-  //job title
+                          //job title
                           Container(
                             width: 171.w,
                             height: 26.h,
                             //color: Colors.amber,
-                              child: Text(
-                                "${widget.job.title}",
-                                style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18.h),
+                            child: Text(
+                              "${widget.job.title}",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18.h),
 
                             ),
                           ),
@@ -109,25 +103,25 @@ class _JobBoxState extends State<JobBox> {
                     ],
                   ),
 
- // BookMark Button
+                  // BookMark Button
 
                   IconButton(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(0),
                       onPressed: () {
-                        //final jobProvide = Provider.of<JobProvider>(context);
+                        final _userProvider = Provider.of<UserProvider>(context, listen: false);
                         setState(() {
-
                           isBookMark = !isBookMark;
-                          isBookMark ? userProvider.addJobToUser(userProvider.user.id!, widget.job.id) :
-                          userProvider.removeJobFromUser(userProvider.user.id!, widget.job.id);
-
+                          if (isBookMark) {
+                            _userProvider.addJobToUser(_userProvider.user!.id!, widget.job.id);
+                          } else {
+                            _userProvider.removeJobFromUser(_userProvider.user!.id!, widget.job.id);
+                          }
                         });
                       },
                       iconSize: 30.h,
                       icon: Icon(
                         Iconsax.save_21,
-                        //size: 30.h,
                         color: isBookMark ? primaryColor : secondAccentColors,
                       ))
                 ],
@@ -165,7 +159,7 @@ class _JobBoxState extends State<JobBox> {
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [box("Full-time"), box("Remote"), box("Intership")],
+                children: [box("Full-time"), box("Remote"), box("Internship")],
               ),
 
               Container(
@@ -226,23 +220,25 @@ class _JobBoxState extends State<JobBox> {
               )
             ],
           ),
-        ),
-      );
+        );
+      })
+
+  );
 
   companyLogoBox() => Container(
-        alignment: Alignment.center,
-        height: 50.h,
-        width: 50.h,
-        decoration: BoxDecoration(
-            color: primaryColor, borderRadius: BorderRadius.circular(6)),
-        child: Text(
-          "${widget.job.title[0]}.",
-          style: GoogleFonts.poppins(
-              color: backgroundColor,
-              fontSize: 28,
-              fontWeight: FontWeight.w700),
-        ),
-      );
+    alignment: Alignment.center,
+    height: 50.h,
+    width: 50.h,
+    decoration: BoxDecoration(
+        color: primaryColor, borderRadius: BorderRadius.circular(6)),
+    child: Text(
+      "${widget.job.title[0]}.",
+      style: GoogleFonts.poppins(
+          color: backgroundColor,
+          fontSize: 28,
+          fontWeight: FontWeight.w700),
+    ),
+  );
 
   box(String title) {
     return IntrinsicWidth(
@@ -254,20 +250,20 @@ class _JobBoxState extends State<JobBox> {
         child: Text(
           title,
           style:
-              GoogleFonts.poppins(fontSize: 12.h, fontWeight: FontWeight.w500),
+          GoogleFonts.poppins(fontSize: 12.h, fontWeight: FontWeight.w500),
         ),
       ),
     );
   }
 
   profileView(String name, Color c) => CircleAvatar(
-        maxRadius: 15.h,
-        backgroundColor: c,
-        child: Center(
-          child: Text(
-            name,
-            style: GoogleFonts.poppins(color: Colors.white),
-          ),
-        ),
-      );
-}// end of class
+    maxRadius: 15.h,
+    backgroundColor: c,
+    child: Center(
+      child: Text(
+        name,
+        style: GoogleFonts.poppins(color: Colors.white),
+      ),
+    ),
+  );
+}

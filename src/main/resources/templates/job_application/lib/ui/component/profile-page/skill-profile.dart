@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:job_application/controller/SkillDropdownScreen.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
 
 import '../../../model/user.dart';
 
@@ -24,11 +26,18 @@ class _SkillsPageViewState extends State<SkillsPageView> {
           SizedBox(
             height: 20.h,
           ),
-          Column(
-            children:List.generate(userProvider.user.profile!.skills!.length,(index){
-              final skill = userProvider.user.profile!.skills![index];
-              return SkillsBox(skill);
-            }),
+          Consumer<UserProvider>(
+            builder: (context,userP,child) {
+              final User user = userP.user!;
+              return Column(
+                children: user.profile?.skills != null && user.profile!.skills!.isNotEmpty
+                    ? List.generate(user.profile!.skills!.length, (index) {
+                  final skill = user.profile!.skills![index];
+                  return SkillsBox(skill);
+                })
+                    : [Text('No skills available')],
+              );
+            }
           ),
 
           ElevatedButton(
@@ -108,11 +117,12 @@ class _SkillsPageViewState extends State<SkillsPageView> {
                       side: BorderSide(width: 1, color: Colors.redAccent),
                       backgroundColor: Colors.transparent),
                   onPressed: () {
-                    print("${skill.id}-${userProvider.user.id!}");
-                    userProvider.deletedSkillFromUser(userProvider.user.id!, skill.id);
-                    setState(() {
-                      //widget.skills.remove(skill);
-                    });
+                    final userP = Provider.of<UserProvider>(context,listen: false);
+                    print("${skill.id}-${userP.user.id!}");
+                    userP.deletedSkillFromUser(userP.user.id!, skill.id);
+                    // setState(() {
+                    //   //widget.skills.remove(skill);
+                    // });
 
                   },
                   child: Text(

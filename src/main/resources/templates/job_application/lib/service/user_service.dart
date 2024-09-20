@@ -164,4 +164,27 @@ class UserService {
          throw Exception('An error occurred while removing the skill: $e');
       }
    }
+
+   // education
+
+   Future<User> userPostEducation(int id , Education education) async{
+      final url = Uri.parse("$baseUrl/$id/education/post");
+      try{
+         final res = await http.post(url,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(education.toJson()),
+         );
+         if(res.statusCode == 201){
+            final body = res.body;
+            return User.fromJson(jsonDecode(body));
+         }else {
+            throw Exception('Failed to remove skill from user. Status Code: ${res.statusCode}');
+         }
+      }
+      catch(e){
+         throw Exception('An error occurred while post the education: $e');
+      }
+
+
+   }
 }

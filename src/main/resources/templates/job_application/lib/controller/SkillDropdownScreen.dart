@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/page/profile-page.dart';
+import 'package:provider/provider.dart';
 import '../model/user.dart';
 import '../ui/page/signin-page.dart';
 import 'SkillController.dart';
@@ -41,8 +42,9 @@ class SkillDropdownScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                final userP = Provider.of<UserProvider>(context,listen: false);
                 if (skillController.selectedSkill.value != null) {
-                  userProvider.addSkillToUser(userProvider.user.id!, skillController.selectedSkill.value!.id);
+                  userP.addSkillToUser(userP.user.id!, skillController.selectedSkill.value!.id);
                   //Get.to(ProfilePage(user: userProvider.user));
                   Get.back();
                   Get.snackbar('Success', 'Skill added successfully');

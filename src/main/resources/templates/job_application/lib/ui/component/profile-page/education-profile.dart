@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/component/company-logo.dart';
+import 'package:job_application/ui/component/profile-page/EducationFormPage.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
+
+import '../../../model/user.dart';
 
 class EducationPageView extends StatefulWidget {
   const EducationPageView({super.key});
@@ -21,13 +28,29 @@ class _EducationPageViewState extends State<EducationPageView> {
           SizedBox(
             height: 20.h,
           ),
-          EducationBox(),
-          EducationBox(),
+          Consumer<UserProvider>(
+            builder: (context,userP,child) {
+              final User user = userP.user!;
+              return Column(
+                children: user.profile!.educations! != null && user.profile!.educations!.isNotEmpty ?
+                List.generate(user.profile!.educations!.length, (index) => EducationBox(user.profile!.educations![index])) :
+                []
+
+              );
+            }
+          ),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: backgroundColor,
                   side: BorderSide(width: 2, color: primaryColor)),
-              onPressed: () {},
+              onPressed: () {
+                Get.to(
+                 EducationFormPage(),
+                  transition: Transition.fadeIn, // Choose your transition
+                  duration: Duration(milliseconds: 600), // Set animation duration
+                  curve: Curves.easeInOut, // Set the curve for animation
+                );
+              },
               child: Container(
                   alignment: Alignment.center,
                   width: double.infinity,
@@ -48,7 +71,7 @@ class _EducationPageViewState extends State<EducationPageView> {
     );
   }
 
-  EducationBox() => Stack(
+  EducationBox(Education education) => Stack(
         children: [
           IntrinsicHeight(
             child: Container(
@@ -73,7 +96,7 @@ class _EducationPageViewState extends State<EducationPageView> {
                         children: [
                           // Univercity name or school name
                           Text(
-                            "Univercity of Managerment",
+                            "${education.school}",
                             style: GoogleFonts.poppins(
                                 fontSize: 18.h,
                                 fontWeight: FontWeight.w600,
@@ -106,7 +129,7 @@ class _EducationPageViewState extends State<EducationPageView> {
                               // start date and end date
 
                               Text(
-                                "Feb 2018 - Now",
+                                "${DateFormat('MMM-dd').format(education.startDate)} - ${DateFormat('MMM-dd').format(education.endDate)}",
                                 style: GoogleFonts.poppins(
                                     fontSize: 12.h,
                                     fontWeight: FontWeight.w300,
@@ -120,7 +143,7 @@ class _EducationPageViewState extends State<EducationPageView> {
                             padding: EdgeInsets.only(top: 5.h, right: 20.w),
                             //color: Colors.amber,
                             child: Text(
-                              "user-friendly interfaces for web and mobile applications. Skilled in leveraging design principles and user-centered methodologies to deliver high-quality, visually appealing products.",
+                              "${education.description}",
                               style: GoogleFonts.poppins(
                                   fontSize: 13.h, fontWeight: FontWeight.w400),
                             ),
@@ -138,7 +161,14 @@ class _EducationPageViewState extends State<EducationPageView> {
               child: IconButton(
                 iconSize: 20.h,
                 icon: Icon(Iconsax.edit),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(
+                    EducationFormPage(educationData: education,),
+                    transition: Transition.fadeIn, // Choose your transition
+                    duration: Duration(milliseconds: 600), // Set animation duration
+                    curve: Curves.easeInOut, // Set the curve for animation
+                  );
+                },
               ))
         ],
       );

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/component/bookmark-page/job-bookmark-box.dart';
 import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
+import 'package:provider/provider.dart';
 
 import '../../model/job.dart';
+import '../../model/user.dart';
 
 class BookMarkPage extends StatefulWidget {
 
@@ -18,17 +21,17 @@ class BookMarkPage extends StatefulWidget {
 class _BookMarkPageState extends State<BookMarkPage> {
  late List<Job> saveJob = [];
   @override
-  void initState() {
-    super.initState();
-    // Ensure the context is available and fetch the provider here
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (userProvider.user.saveJobs != null) {
-        setState(() {
-          saveJob = userProvider.user.saveJobs!;
-        });
-      }
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  //   // Ensure the context is available and fetch the provider here
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (userProvider.user.saveJobs != null) {
+  //       setState(() {
+  //         saveJob = userProvider.user.saveJobs!;
+  //       });
+  //     }
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     final Job job = Job(id: 0, title: "eer");
@@ -52,22 +55,26 @@ class _BookMarkPageState extends State<BookMarkPage> {
               height: 20.h,
             ),
             Expanded(
-              child: Container(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: userProvider.user.saveJobs != null && userProvider.user.saveJobs!.isNotEmpty
-                        ? List.generate(userProvider.user.saveJobs!.length, (index) {
-                      final job = userProvider.user.saveJobs![index];
-                      return JobBookMarkBox(job: job);
-                    })
-                        : [
-                      Center(
-                        child: Text('No bookmarked jobs found'),
-                      ),
-                    ],
-                  )
-                ),
-              ),
+              child: Consumer<UserProvider>(builder: (context,userP,child) {
+                final User user = userP.user!;
+                return Container(
+                  child: SingleChildScrollView(
+                      child: Column(
+                        children: user.saveJobs != null && user.saveJobs!.isNotEmpty
+                            ? List.generate(user.saveJobs!.length, (index) {
+                          final job = user.saveJobs![index];
+                          return JobBookMarkBox(job: job);
+                        })
+                            : [
+                          Center(
+                            child: Text('No bookmarked jobs found'),
+                          ),
+                        ],
+                      )
+                  ),
+                );
+                },)
+
             )
           ],
         ),
