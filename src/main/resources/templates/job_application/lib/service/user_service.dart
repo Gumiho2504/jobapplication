@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../model/user.dart';
 
@@ -185,6 +186,103 @@ class UserService {
          throw Exception('An error occurred while post the education: $e');
       }
 
+   }
+
+   Future<User> getUserById(int id) async {
+      final url = Uri.parse("$baseUrl/$id");
+      try{
+         final res = await http.get(url);
+         if(res.statusCode == 200){
+            final body = res.body;
+            return User.fromJson(jsonDecode(body));
+         }else{
+            throw Exception('Failed to get user Status Code: ${res.statusCode}');
+         }
+      }catch(e){
+         throw Exception("an error to get user $e");
+      }
+   }
+
+   Future<User> userEditEducation(int userId,int educationId,Education education) async{
+      final url = Uri.parse("http://localhost:8080/education/id=$educationId");
+      try{
+         final res = await http.put(
+            url,
+            headers: {'Content-Type': 'application/json'},
+            body:jsonEncode(education.toJson())
+         );
+         if(res.statusCode == 200){
+            final body = res.body;
+            print("editd -  $body");
+         }else{
+            throw Exception("failed to edit education");
+         }
+      }catch(e){
+         throw Exception("error at edit education :  $e");
+      }
+      return await getUserById(userId);
+   }
+
+   Future<User> userDeleteEducation(int userId ,int educationId) async {
+      final url = Uri.parse("http://localhost:8080/education/id=$educationId");
+      final res = await http.delete(url);
+      if(res.statusCode == 202){
+         print("success! education deleted !");
+      }else{
+         print("failed to delete education");
+      }
+      return await getUserById(userId);
+   }
+   // experience
+
+   Future<User> userPostExperience(int id , Experience experience) async {
+      final url = Uri.parse("$baseUrl/$id/experience/post");
+      try{
+         final res = await http.post(
+             url,
+             headers: {'Content-Type' : 'application/json'},
+             body: jsonEncode(experience.toJson())
+         );
+         if(res.statusCode == 201){
+            final body = res.body;
+            return User.fromJson(jsonDecode(body));
+         }else{
+            throw Exception("failed to post experience !");
+         }
+      }catch(e){
+         throw Exception("error at post experience : $e");
+      }
 
    }
+   ///experience
+    Future<User> userEditExperience(int userId,int experienceId,Experience experience) async{
+      final url = Uri.parse("http://localhost:8080/experience/id=$experienceId");
+      try{
+         final res = await http.put(url,headers: {'Content-Type':'application/json'},body: jsonEncode(experience.toJson()));
+         if(res.statusCode == 202){
+            final body = res.body;
+            print('new experience update : $body');
+         }else{
+            throw Exception("failed to update experience !");
+         }
+      }catch(e){
+         throw Exception("error : $e");
+      }
+      return await getUserById(userId);
+    }
+
+    Future<User> userDeleteExperience(int userId,int experienceId) async {
+      final url = Uri.parse("http://localhost:8080/experience/id=$experienceId");
+      try{
+         final res = await http.delete(url);
+         if(res.statusCode == 202){
+            print("success to delete experience");
+         }else{
+            print("failed to deleted experience");
+         }
+      }catch(e){
+         throw Exception("erorr : $e");
+      }
+      return await getUserById(userId);
+    }
 }

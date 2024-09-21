@@ -66,7 +66,7 @@ class UserProvider extends ChangeNotifier{
       notifyListeners();
    }
 
-   Future<void> userAddProfle(int userId ,Profile profile) async {
+   Future<void> userAddProfile(int userId ,Profile profile) async {
       _user = await userService.addProfileToUser(userId, profile);
       notifyListeners();
    }
@@ -76,5 +76,29 @@ class UserProvider extends ChangeNotifier{
       notifyListeners();
    }
 
+   Future<void> userEditEducation(int userId, int educationId,Education education) async {
+      _user = await userService.userEditEducation(userId, educationId,education);
+      notifyListeners();
+   }
 
+   Future<void> userDeleteEducation(int userId, int educationId) async {
+      _user = await userService.userDeleteEducation(userId, educationId);
+      notifyListeners();
+   }
+   // experience
+
+   Future<void> userPostExperience(int id , Experience experience) async {
+      _user = await userService.userPostExperience(id, experience);
+      notifyListeners();
+   }
+
+   Future<void> userUpdateExperience(int userId , int experienceId , Experience experience) async{
+      _user = await userService.userEditExperience(userId, experienceId, experience);
+      notifyListeners();
+   }
+
+   Future<void> userDeleteExperience(int userId,int experienceId) async {
+     _user = await userService.userDeleteExperience(userId, experienceId);
+     notifyListeners();
+   }
 }

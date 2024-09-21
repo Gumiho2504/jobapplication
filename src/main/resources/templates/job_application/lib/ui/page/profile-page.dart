@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: title,
                     phoneNumber: phoneNumber,
                   );
-                  providerUser.userAddProfle(providerUser.user!.id!, profile);
+                  providerUser.userAddProfile(providerUser.user!.id!, profile);
                   //Navigator.pop(context); // Close the form after submission
                 }),
               );

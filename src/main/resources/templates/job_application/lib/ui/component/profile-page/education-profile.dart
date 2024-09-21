@@ -161,6 +161,7 @@ class _EducationPageViewState extends State<EducationPageView> {
               child: IconButton(
                 iconSize: 20.h,
                 icon: Icon(Iconsax.edit),
+
                 onPressed: () {
                   Get.to(
                     EducationFormPage(educationData: education,),
@@ -169,6 +170,7 @@ class _EducationPageViewState extends State<EducationPageView> {
                     curve: Curves.easeInOut, // Set the curve for animation
                   );
                 },
+
               ))
         ],
       );

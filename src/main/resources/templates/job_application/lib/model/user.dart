@@ -157,7 +157,7 @@ class Education {
 }
 
 class Experience {
-  int id;
+  int? id;
   String title;
   String description;
   String company;
@@ -166,7 +166,7 @@ class Experience {
   bool isWorking;
 
   Experience({
-    required this.id,
+    this.id,
     required this.title,
     required this.description,
     required this.company,

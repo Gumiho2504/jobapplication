@@ -30,6 +30,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
 
     // If editing, pre-populate the form with existing data
     if (widget.educationData != null) {
+      print("education id : ${widget.educationData!.id}");
       schoolController.text = widget.educationData!.school;
       fieldController.text = widget.educationData!.field;
       startDateController.text = widget.educationData!.startDate.toString();
@@ -66,6 +67,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userP = Provider.of<UserProvider>(context,listen: true);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.educationData != null ? "Edit Education" : "Add Education"),
@@ -156,7 +158,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
               // Submit Button
               ElevatedButton(
                 onPressed: () {
-                  final userP = Provider.of<UserProvider>(context,listen: false);
+
                   if (_formKey.currentState!.validate()) {
 
                     Education education = Education(
@@ -171,16 +173,36 @@ class _EducationFormPageState extends State<EducationFormPage> {
                     // If editing, update the existing education
                     if (widget.educationData != null) {
 
+                          userP.userEditEducation(userP.user.id!, widget.educationData!.id!,education);
+
+                          Get.back();
+                          Get.snackbar('Success', 'Education updated successfully');
                     } else {
                       userP.userPostEducation(userP.user.id!, education);
-                        Get.back();
-                    }
+                      Get.back();
+                      Get.snackbar('Success', 'Education posted successfully');
 
+                    }
+//Get.back();
                     //Navigator.pop(context, newEducation);
                   }
                 },
                 child: Text(widget.educationData != null ? "Update Education" : "Add Education"),
               ),
+              widget.educationData != null ?
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent
+                ),
+                onPressed: () async {
+                  await userP.userDeleteEducation(userP.user.id!, widget.educationData!.id!);
+                  Get.back();
+                  Get.snackbar('Success', 'Education Deleted');
+                },
+                  child: Text("Delete")) :
+              ElevatedButton(
+                onPressed: (){},
+                  child: Text(""))
             ],
           ),
         ),
