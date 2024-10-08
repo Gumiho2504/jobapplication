@@ -27,7 +27,6 @@ class _JobBoxState extends State<JobBox> {
 
   @override
   Widget build(BuildContext context) {
-
     ScreenUtil.init(
       context,
       designSize: Size(430, 932),
@@ -35,13 +34,14 @@ class _JobBoxState extends State<JobBox> {
     return jobBox(context);
   }
 
-  jobBox(BuildContext context) => GestureDetector(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => JobDetailPage(job: widget.job,isBookMark: isBookMark,)));
-      },
-      child: Consumer<UserProvider>(builder: (context, _userProvider, child){
-
+  jobBox(BuildContext context) => GestureDetector(onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => JobDetailPage(
+                  job: widget.job,
+                  isBookMark: isBookMark,
+                )));
+      }, child:
+          Consumer<UserProvider>(builder: (context, _userProvider, child) {
         User user = _userProvider.user!;
         isBookMark = user.saveJobs!.any((j) => j.id == widget.job.id);
         return Container(
@@ -88,11 +88,10 @@ class _JobBoxState extends State<JobBox> {
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 18.h),
-
                             ),
                           ),
                           Text(
-                            "Briosous Solution",
+                            "${widget.job.company.name}",
                             style: GoogleFonts.poppins(
                                 color: secondAccentColors,
                                 fontSize: 12.h,
@@ -109,13 +108,16 @@ class _JobBoxState extends State<JobBox> {
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(0),
                       onPressed: () {
-                        final _userProvider = Provider.of<UserProvider>(context, listen: false);
+                        final _userProvider =
+                            Provider.of<UserProvider>(context, listen: false);
                         setState(() {
                           isBookMark = !isBookMark;
                           if (isBookMark) {
-                            _userProvider.addJobToUser(_userProvider.user!.id!, widget.job.id);
+                            _userProvider.addJobToUser(
+                                _userProvider.user!.id!, widget.job.id);
                           } else {
-                            _userProvider.removeJobFromUser(_userProvider.user!.id!, widget.job.id);
+                            _userProvider.removeJobFromUser(
+                                _userProvider.user!.id!, widget.job.id);
                           }
                         });
                       },
@@ -159,7 +161,11 @@ class _JobBoxState extends State<JobBox> {
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [box("Full-time"), box("Remote"), box("Internship")],
+                children: [
+                  box("${widget.job.type}"),
+                  box("${widget.job.workModel}"),
+                  box("${widget.job.level}")
+                ],
               ),
 
               Container(
@@ -207,7 +213,7 @@ class _JobBoxState extends State<JobBox> {
                   Row(
                     children: [
                       Text(
-                        "\$1K-\$3K",
+                        "\$${widget.job.salary}", //"\$1K-\$3K",
                         style: headline2_black,
                       ),
                       Text(
@@ -221,24 +227,22 @@ class _JobBoxState extends State<JobBox> {
             ],
           ),
         );
-      })
-
-  );
+      }));
 
   companyLogoBox() => Container(
-    alignment: Alignment.center,
-    height: 50.h,
-    width: 50.h,
-    decoration: BoxDecoration(
-        color: primaryColor, borderRadius: BorderRadius.circular(6)),
-    child: Text(
-      "${widget.job.title[0]}.",
-      style: GoogleFonts.poppins(
-          color: backgroundColor,
-          fontSize: 28,
-          fontWeight: FontWeight.w700),
-    ),
-  );
+        alignment: Alignment.center,
+        height: 50.h,
+        width: 50.h,
+        decoration: BoxDecoration(
+            color: primaryColor, borderRadius: BorderRadius.circular(6)),
+        child: Text(
+          "${widget.job.title[0]}.",
+          style: GoogleFonts.poppins(
+              color: backgroundColor,
+              fontSize: 28,
+              fontWeight: FontWeight.w700),
+        ),
+      );
 
   box(String title) {
     return IntrinsicWidth(
@@ -250,20 +254,20 @@ class _JobBoxState extends State<JobBox> {
         child: Text(
           title,
           style:
-          GoogleFonts.poppins(fontSize: 12.h, fontWeight: FontWeight.w500),
+              GoogleFonts.poppins(fontSize: 12.h, fontWeight: FontWeight.w500),
         ),
       ),
     );
   }
 
   profileView(String name, Color c) => CircleAvatar(
-    maxRadius: 15.h,
-    backgroundColor: c,
-    child: Center(
-      child: Text(
-        name,
-        style: GoogleFonts.poppins(color: Colors.white),
-      ),
-    ),
-  );
+        maxRadius: 15.h,
+        backgroundColor: c,
+        child: Center(
+          child: Text(
+            name,
+            style: GoogleFonts.poppins(color: Colors.white),
+          ),
+        ),
+      );
 }

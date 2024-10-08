@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
+
 import 'package:intl/intl.dart';
 import 'package:job_application/model/user.dart';
 import 'package:job_application/provider/user_provider.dart';
+import 'package:job_application/ui/style/style.dart';
 import 'package:provider/provider.dart';
 
 class EducationFormPage extends StatefulWidget {
-  final Education? educationData;// Pass education data if editing, otherwise null for new entry
+  final Education?
+      educationData; // Pass education data if editing, otherwise null for new entry
 
   const EducationFormPage({Key? key, this.educationData}) : super(key: key);
 
@@ -50,7 +56,8 @@ class _EducationFormPageState extends State<EducationFormPage> {
   }
 
   // Method to show DatePicker and format the selected date
-  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -67,146 +74,275 @@ class _EducationFormPageState extends State<EducationFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userP = Provider.of<UserProvider>(context,listen: true);
+    final userP = Provider.of<UserProvider>(context, listen: true);
+    ScreenUtil.init(
+      context,
+      designSize: Size(430, 932),
+    );
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: Text(widget.educationData != null ? "Edit Education" : "Add Education"),
+        leading: IconButton(
+            style: IconButton.styleFrom(
+                padding: EdgeInsets.all(10.h),
+                backgroundColor: Colors.transparent,
+                side: BorderSide(width: 0.01, color: Colors.transparent)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Iconsax.arrow_left,
+              color: Colors.white,
+            )),
+        backgroundColor: primaryColor,
+        title: Text(
+          widget.educationData != null ? "Edit Education" : "Add Education",
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: 25.h,
+              color: Colors.white70),
+        ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0.w),
+        padding: EdgeInsets.all(20.0.w),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              // School Name
-              TextFormField(
-                controller: schoolController,
-                decoration: InputDecoration(labelText: 'School'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a school name';
-                  }
-                  return null;
-                },
-              ),
+              _FormBox('School', 'University, HighSchool',
+                  'Please enter school name', schoolController),
+
               SizedBox(height: 16.h),
 
-              // Field of Study
-              TextFormField(
-                controller: fieldController,
-                decoration: InputDecoration(labelText: 'Field of Study'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a field of study';
-                  }
-                  return null;
-                },
-              ),
+              _FormBox("Field of Study", 'Bachelor degree,PHD',
+                  'Please enter a field of study', fieldController),
+
               SizedBox(height: 16.h),
 
               // Start Date
-              TextFormField(
-                controller: startDateController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Start Date',
-                  suffixIcon: Icon(Icons.calendar_today),
+
+              Container(
+                height: 92.h,
+                //color: Colors.amber,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Start Date",
+                      style: GoogleFonts.poppins(
+                          color: primaryColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18.h),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(width: 0.5, color: primaryColor),
+                          borderRadius: BorderRadius.circular(5.r)),
+                      height: 55.h,
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        controller: startDateController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'DD/MM/YYYY',
+                          hintStyle: GoogleFonts.poppins(
+                              color: secondAccentColors, fontSize: 17.h),
+                          suffixIcon: Icon(
+                            Iconsax.calendar_2,
+                            size: 30.h,
+                            color: primaryColor,
+                          ),
+                        ),
+                        onTap: () => _selectDate(context, startDateController),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select an start date';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                onTap: () => _selectDate(context, startDateController),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a start date';
-                  }
-                  return null;
-                },
               ),
               SizedBox(height: 16.h),
 
               // End Date
-              TextFormField(
-                controller: endDateController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'End Date',
-                  suffixIcon: Icon(Icons.calendar_today),
+
+              Container(
+                height: 92.h,
+                //color: Colors.amber,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "End Date",
+                      style: GoogleFonts.poppins(
+                          color: primaryColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18.h),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(width: 0.5, color: primaryColor),
+                          borderRadius: BorderRadius.circular(5.r)),
+                      height: 55.h,
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        controller: endDateController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'DD/MM/YYYY',
+                          hintStyle: GoogleFonts.poppins(
+                              color: secondAccentColors, fontSize: 17.h),
+                          suffixIcon: Icon(
+                            Iconsax.calendar_2,
+                            size: 30.h,
+                            color: primaryColor,
+                          ),
+                        ),
+                        onTap: () => _selectDate(context, endDateController),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select an end date';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                onTap: () => _selectDate(context, endDateController),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select an end date';
-                  }
-                  return null;
-                },
               ),
+
               SizedBox(height: 16.h),
 
               // Description
-              TextFormField(
-                controller: descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-              ),
+              _FormBox('Description', 'About your education',
+                  'Please enter description', descriptionController),
+
               SizedBox(height: 16.h),
 
               // Submit Button
               ElevatedButton(
-                onPressed: () {
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: backgroundColor,
+                      side: BorderSide(width: 2, color: primaryColor)),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Education education = Education(
+                          school: schoolController.text,
+                          field: fieldController.text,
+                          startDate: DateTime.parse(startDateController.text),
+                          endDate: DateTime.parse(endDateController.text),
+                          description: descriptionController.text);
 
-                  if (_formKey.currentState!.validate()) {
+                      // If editing, update the existing education
+                      if (widget.educationData != null) {
+                        userP.userEditEducation(userP.user.id!,
+                            widget.educationData!.id!, education);
 
-                    Education education = Education(
-
-                        school: schoolController.text,
-                        field: fieldController.text,
-                        startDate: DateTime.parse(startDateController.text),
-                        endDate: DateTime.parse(endDateController.text),
-                        description: descriptionController.text
-                  );
-
-                    // If editing, update the existing education
-                    if (widget.educationData != null) {
-
-                          userP.userEditEducation(userP.user.id!, widget.educationData!.id!,education);
-
-                          Get.back();
-                          Get.snackbar('Success', 'Education updated successfully');
-                    } else {
-                      userP.userPostEducation(userP.user.id!, education);
-                      Get.back();
-                      Get.snackbar('Success', 'Education posted successfully');
-
-                    }
+                        Get.back();
+                        Get.snackbar(
+                            'Success', 'Education updated successfully');
+                      } else {
+                        userP.userPostEducation(userP.user.id!, education);
+                        Get.back();
+                        Get.snackbar(
+                            'Success', 'Education posted successfully');
+                      }
 //Get.back();
-                    //Navigator.pop(context, newEducation);
-                  }
-                },
-                child: Text(widget.educationData != null ? "Update Education" : "Add Education"),
-              ),
-              widget.educationData != null ?
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent
-                ),
-                onPressed: () async {
-                  await userP.userDeleteEducation(userP.user.id!, widget.educationData!.id!);
-                  Get.back();
-                  Get.snackbar('Success', 'Education Deleted');
-                },
-                  child: Text("Delete")) :
-              ElevatedButton(
-                onPressed: (){},
-                  child: Text(""))
+                      //Navigator.pop(context, newEducation);
+                    }
+                  },
+                  child: Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: 60.h,
+                      // decoration: BoxDecoration(color: Colors.amber),
+                      child: Text(
+                        widget.educationData != null
+                            ? "Update Education"
+                            : "+ Add Education",
+                        style: GoogleFonts.poppins(
+                            color: primaryColor,
+                            fontSize: 18.h,
+                            fontWeight: FontWeight.w500),
+                      ))),
+
+              // widget.educationData != null
+              //     ? ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //             backgroundColor: Colors.redAccent),
+              //         onPressed: () async {
+              //           await userP.userDeleteEducation(
+              //               userP.user.id!, widget.educationData!.id!);
+              //           Get.back();
+              //           Get.snackbar('Success', 'Education Deleted');
+              //         },
+              //         child: Text("Delete"))
+              //     : ElevatedButton(onPressed: () {}, child: Text(""))
             ],
           ),
         ),
       ),
     );
-  }
+  } // end
+
+  _FormBox(String label, String hint, String error,
+          TextEditingController controller) =>
+      Container(
+        height: 92.h,
+        //color: Colors.amber,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: GoogleFonts.poppins(
+                  color: primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.h),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10.h),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(width: 0.5, color: primaryColor),
+                  borderRadius: BorderRadius.circular(5.r)),
+              height: 55.h,
+              alignment: Alignment.center,
+              child: TextFormField(
+                style: GoogleFonts.poppins(color: Colors.black, fontSize: 18.h),
+                controller: controller,
+                decoration: InputDecoration(
+                    // fillColor: Colors.amber,
+                    border: InputBorder.none,
+                    hintText: hint,
+                    hintStyle: GoogleFonts.poppins(
+                        color: secondAccentColors, fontSize: 17.h)),
+                //hintText: "E"
+
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return error;
+                  }
+                  return null;
+                },
+              ),
+            ),
+          ],
+        ),
+      );
 }

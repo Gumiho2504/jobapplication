@@ -11,7 +11,6 @@ import '../../model/job.dart';
 import '../../model/user.dart';
 
 class BookMarkPage extends StatefulWidget {
-
   const BookMarkPage({super.key});
 
   @override
@@ -19,7 +18,7 @@ class BookMarkPage extends StatefulWidget {
 }
 
 class _BookMarkPageState extends State<BookMarkPage> {
- late List<Job> saveJob = [];
+  late List<Job> saveJob = [];
   @override
   // void initState() {
   //   super.initState();
@@ -34,7 +33,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
   // }
   @override
   Widget build(BuildContext context) {
-    final Job job = Job(id: 0, title: "eer");
+    // final Job job = Job(id: 0, title: "eer");
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.h),
@@ -54,28 +53,26 @@ class _BookMarkPageState extends State<BookMarkPage> {
             SizedBox(
               height: 20.h,
             ),
-            Expanded(
-              child: Consumer<UserProvider>(builder: (context,userP,child) {
+            Expanded(child: Consumer<UserProvider>(
+              builder: (context, userP, child) {
                 final User user = userP.user!;
                 return Container(
                   child: SingleChildScrollView(
                       child: Column(
-                        children: user.saveJobs != null && user.saveJobs!.isNotEmpty
-                            ? List.generate(user.saveJobs!.length, (index) {
-                          final job = user.saveJobs![index];
-                          return JobBookMarkBox(job: job);
-                        })
-                            : [
-                          Center(
-                            child: Text('No bookmarked jobs found'),
-                          ),
-                        ],
-                      )
-                  ),
+                    children: user.saveJobs != null && user.saveJobs!.isNotEmpty
+                        ? List.generate(user.saveJobs!.length, (index) {
+                            final job = user.saveJobs![index];
+                            return JobBookMarkBox(job: job);
+                          })
+                        : [
+                            Center(
+                              child: Text('No bookmarked jobs found'),
+                            ),
+                          ],
+                  )),
                 );
-                },)
-
-            )
+              },
+            ))
           ],
         ),
       ),

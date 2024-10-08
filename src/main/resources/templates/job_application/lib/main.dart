@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 
 import 'package:job_application/provider/job_provider.dart';
 import 'package:job_application/provider/user_provider.dart';
-import 'package:job_application/ui/navigationController.dart';
+
 
 import 'package:job_application/ui/page/getstart-page.dart';
-import 'package:job_application/ui/page/joblist-page.dart';
 
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {

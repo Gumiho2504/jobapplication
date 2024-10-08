@@ -11,7 +11,7 @@ class SimilarJobDetial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Job similarJob = Job(id: 9, title: "dfff");
+    //final Job similarJob = Job(id: 9, title: "dfff",t);
     return Container(
         child: SingleChildScrollView(
       child: Column(
@@ -24,8 +24,8 @@ class SimilarJobDetial extends StatelessWidget {
                   Border(bottom: BorderSide(color: primaryColor, width: 1))),
           child: ListTile(
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => JobDetailPage(job: similarJob,isBookMark: false,)));
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (context) => JobDetailPage(job: similarJob,isBookMark: false,)));
             },
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(

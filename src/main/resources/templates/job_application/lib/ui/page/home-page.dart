@@ -175,15 +175,16 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                     height: 216.h,
                     child: jobProvider.isLoading
-                        ? const Center(child: CircularProgressIndicator()) :
-                    ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: jobProvider.jobs.length,
-                        itemBuilder: (context, index) {
-                          Job job = jobProvider.jobs[index];
-                          return JobBox(job: job,);
-    }
-    )),
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: jobProvider.jobs.length,
+                            itemBuilder: (context, index) {
+                              Job job = jobProvider.jobs[index];
+                              return JobBox(
+                                job: job,
+                              );
+                            })),
                 section("Recent Jobs"),
                 SizedBox(
                     height: 45.h,
@@ -199,15 +200,19 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(right: 20),
                   child: SizedBox(
                     height: 216.h,
-                    child: ListView.builder(
-                        padding: EdgeInsets.only(top: 0, bottom: 10.h),
-                        physics: ScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: 2,
-                        itemBuilder: (context, index) => Padding(
-                              padding: EdgeInsets.only(bottom: 10),
-                             // child: JobBox(),
-                            )),
+                    child: jobProvider.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            padding: EdgeInsets.only(top: 0, bottom: 10.h),
+                            physics: ScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: jobProvider.jobs.length,
+                            itemBuilder: (context, index) => Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: JobBox(
+                                    job: jobProvider.jobs[index],
+                                  ),
+                                )),
                   ),
                 ),
               ],

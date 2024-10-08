@@ -28,26 +28,27 @@ class _EducationPageViewState extends State<EducationPageView> {
           SizedBox(
             height: 20.h,
           ),
-          Consumer<UserProvider>(
-            builder: (context,userP,child) {
-              final User user = userP.user!;
-              return Column(
-                children: user.profile!.educations! != null && user.profile!.educations!.isNotEmpty ?
-                List.generate(user.profile!.educations!.length, (index) => EducationBox(user.profile!.educations![index])) :
-                []
-
-              );
-            }
-          ),
+          Consumer<UserProvider>(builder: (context, userP, child) {
+            final User user = userP.user!;
+            return Column(
+                children: user.profile!.educations! != null &&
+                        user.profile!.educations!.isNotEmpty
+                    ? List.generate(
+                        user.profile!.educations!.length,
+                        (index) =>
+                            EducationBox(user.profile!.educations![index]))
+                    : []);
+          }),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: backgroundColor,
                   side: BorderSide(width: 2, color: primaryColor)),
               onPressed: () {
                 Get.to(
-                 EducationFormPage(),
+                  EducationFormPage(),
                   transition: Transition.fadeIn, // Choose your transition
-                  duration: Duration(milliseconds: 600), // Set animation duration
+                  duration:
+                      Duration(milliseconds: 600), // Set animation duration
                   curve: Curves.easeInOut, // Set the curve for animation
                 );
               },
@@ -106,7 +107,7 @@ class _EducationPageViewState extends State<EducationPageView> {
                             children: [
                               // company name
                               Text(
-                                "Bachelor of Accounting",
+                                "${education.field}",
                                 style: GoogleFonts.poppins(
                                     fontSize: 12.h,
                                     fontWeight: FontWeight.w300,
@@ -161,16 +162,17 @@ class _EducationPageViewState extends State<EducationPageView> {
               child: IconButton(
                 iconSize: 20.h,
                 icon: Icon(Iconsax.edit),
-
                 onPressed: () {
                   Get.to(
-                    EducationFormPage(educationData: education,),
+                    EducationFormPage(
+                      educationData: education,
+                    ),
                     transition: Transition.fadeIn, // Choose your transition
-                    duration: Duration(milliseconds: 600), // Set animation duration
+                    duration:
+                        Duration(milliseconds: 600), // Set animation duration
                     curve: Curves.easeInOut, // Set the curve for animation
                   );
                 },
-
               ))
         ],
       );

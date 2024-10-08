@@ -11,7 +11,7 @@ class SkillController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchSkills();
+    //fetchSkills();
   }
 
   void fetchSkills() async {
@@ -24,6 +24,20 @@ class SkillController extends GetxController {
       Get.snackbar('Error', 'Failed to fetch skills');
     }
   }
+
+  // Future<List<Skill>> fetchSkills() async {
+  //   final response = await http.get(Uri.parse('http://localhost:8080/skill/'));
+
+  //   if (response.statusCode == 200) {
+  //     var data = json.decode(response.body) as List;
+  //     skills.value = data.map((skill) => Skill.fromJson(skill)).toList();
+  //     //List<Skill> skill = skills.value;
+  //     return skills;
+  //   } else {
+  //     Get.snackbar('Error', 'Failed to fetch skills');
+  //     return [];
+  //   }
+  // }
 
   void setSelectedSkill(Skill? skill) {
     selectedSkill.value = skill;

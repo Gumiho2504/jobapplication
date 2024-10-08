@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:job_application/model/job.dart';
 import 'package:job_application/ui/style/style.dart';
 
 class AboutDetail extends StatelessWidget {
-  const AboutDetail({super.key});
+  final Job job;
+  const AboutDetail({
+    Key? key,
+    required this.job,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +33,14 @@ class AboutDetail extends StatelessWidget {
               height: 5.h,
             ),
             Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna aliqua",
+              "${job.title}",
               style: GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
             ),
             SizedBox(
               height: 10.h,
             ),
+
+// job description
             Text(
               "Job Description",
               style: GoogleFonts.poppins(
@@ -40,49 +48,59 @@ class AboutDetail extends StatelessWidget {
                   fontSize: 15.h,
                   fontWeight: FontWeight.w500),
             ),
+            SizedBox(
+              height: 5.h,
+            ),
+            Text(
+              "${job.description}",
+              style: GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
+            ),
+            // ListTile(
+            //   titleAlignment: ListTileTitleAlignment.center,
+            //   leading: Icon(
+            //     Icons.square,
+            //     size: 12.h,
+            //     color: primaryColor,
+            //   ),
+            //   title: Text(
+            //     "Lorem ipsum dolor sit amet,consectetur adipiscing elit.",
+            //     style:
+            //         GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
+            //   ),
+            // ),
+            // ListTile(
+            //   titleAlignment: ListTileTitleAlignment.center,
+            //   leading: Icon(
+            //     Icons.square,
+            //     size: 12.h,
+            //     color: primaryColor,
+            //   ),
+            //   title: Text(
+            //     "Sed do eiusmod tempor incididunt ut labore",
+            //     style:
+            //         GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
+            //   ),
+            // ),
+            // ListTile(
+            //   titleAlignment: ListTileTitleAlignment.center,
+            //   leading: Icon(
+            //     Icons.square,
+            //     size: 12.h,
+            //     color: primaryColor,
+            //   ),
+            //   title: Text(
+            //     "Sed do eiusmod tempor incididunt ut labore",
+            //     style:
+            //         GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
+            //   ),
+            // ),
 
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.center,
-              leading: Icon(
-                Icons.square,
-                size: 12.h,
-                color: primaryColor,
-              ),
-              title: Text(
-                "Lorem ipsum dolor sit amet,consectetur adipiscing elit.",
-                style:
-                    GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
-              ),
-            ),
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.center,
-              leading: Icon(
-                Icons.square,
-                size: 12.h,
-                color: primaryColor,
-              ),
-              title: Text(
-                "Sed do eiusmod tempor incididunt ut labore",
-                style:
-                    GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
-              ),
-            ),
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.center,
-              leading: Icon(
-                Icons.square,
-                size: 12.h,
-                color: primaryColor,
-              ),
-              title: Text(
-                "Sed do eiusmod tempor incididunt ut labore",
-                style:
-                    GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
-              ),
-            ),
             SizedBox(
               height: 10.h,
             ),
+
+            // skill required
+            //
             Text(
               "Skills Required",
               style: GoogleFonts.poppins(
@@ -90,32 +108,38 @@ class AboutDetail extends StatelessWidget {
                   fontSize: 15.h,
                   fontWeight: FontWeight.w500),
             ),
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.center,
-              leading: Icon(
-                Icons.square,
-                size: 12.h,
-                color: primaryColor,
-              ),
-              title: Text(
-                "Technical",
-                style:
-                    GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
+            Column(
+              children: List.generate(
+                job.requestments.length,
+                (index) => ListTile(
+                  titleAlignment: ListTileTitleAlignment.center,
+                  leading: Icon(
+                    Icons.square,
+                    size: 12.h,
+                    color: primaryColor,
+                  ),
+                  title: Text(
+                    "${job.requestments[index].requestment}",
+                    style: GoogleFonts.poppins(
+                        color: Colors.black87, fontSize: 13.h),
+                  ),
+                ),
               ),
             ),
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.center,
-              leading: Icon(
-                Icons.square,
-                size: 12.h,
-                color: primaryColor,
-              ),
-              title: Text(
-                "Project Management",
-                style:
-                    GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
-              ),
-            )
+
+            // ListTile(
+            //   titleAlignment: ListTileTitleAlignment.center,
+            //   leading: Icon(
+            //     Icons.square,
+            //     size: 12.h,
+            //     color: primaryColor,
+            //   ),
+            //   title: Text(
+            //     "Project Management",
+            //     style:
+            //         GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
+            //   ),
+            // )
           ],
         ),
       ),

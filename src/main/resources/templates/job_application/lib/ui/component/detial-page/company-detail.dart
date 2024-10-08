@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+
+import 'package:job_application/model/job.dart';
 import 'package:job_application/ui/style/style.dart';
 
 class CompanyAtDetail extends StatelessWidget {
-  const CompanyAtDetail({super.key});
+  final Company company;
+  const CompanyAtDetail({
+    Key? key,
+    required this.company,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +34,14 @@ class CompanyAtDetail extends StatelessWidget {
               height: 5.h,
             ),
             Text(
-              "WHO WE ARE AJIP CONSULTING is an executive search and human resources consulting firm in Cambodia. Our consultants are highly specialized and have extensive experiences in the industries and areas in which they serve.WHAT WE DO We strive to deliver solutions with speed and quality that make a massive impact for our clients. At present, Ajip is focused on providing unrivaled recruitment services that meet our clients' permanent and short-term needs, delivering mid- to senior-level professional talents across all industry segments in Cambodia.WHERE WE'RE GOING.Our vision is to be the leading HR Consulting, HR Technology Solutions, and Specialist Recruitment group in Cambodia.",
+              "${company.description}",
               style: GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
             ),
             SizedBox(
               height: 10.h,
             ),
+// information
+
             Text(
               "Information",
               style: GoogleFonts.poppins(
@@ -42,28 +50,21 @@ class CompanyAtDetail extends StatelessWidget {
                   fontWeight: FontWeight.w500),
             ),
 
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.center,
-              leading: Icon(
-                Icons.circle,
-                size: 12.h,
-              ),
-              title: Text(
-                "Lorem ipsum dolor sit amet,consectetur adipiscing elit.",
-                style:
-                    GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
-              ),
-            ),
-            ListTile(
-              titleAlignment: ListTileTitleAlignment.center,
-              leading: Icon(
-                Icons.circle,
-                size: 12.h,
-              ),
-              title: Text(
-                "Sed do eiusmod tempor incididunt ut labore",
-                style:
-                    GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
+            Column(
+              children: List.generate(
+                company.informations.length,
+                (index) => ListTile(
+                  titleAlignment: ListTileTitleAlignment.center,
+                  leading: Icon(
+                    Icons.circle,
+                    size: 12.h,
+                  ),
+                  title: Text(
+                    "${company.informations[index].information}",
+                    style: GoogleFonts.poppins(
+                        color: Colors.black87, fontSize: 13.h),
+                  ),
+                ),
               ),
             ),
 
@@ -85,7 +86,7 @@ class CompanyAtDetail extends StatelessWidget {
                 size: 15.h,
               ),
               title: Text(
-                "+855 86937183",
+                "+${company.phoneNumber}",
                 style:
                     GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
               ),
@@ -97,7 +98,7 @@ class CompanyAtDetail extends StatelessWidget {
                 size: 15.h,
               ),
               title: Text(
-                "vta@outlook.com",
+                "${company.email}",
                 style:
                     GoogleFonts.poppins(color: Colors.black87, fontSize: 13.h),
               ),

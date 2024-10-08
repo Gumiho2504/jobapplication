@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/user.dart';
@@ -45,6 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void showProfileForm(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      //isDismissible: false,
       isScrollControlled: false, // This makes the bottom sheet take full height
       builder: (BuildContext context) {
         return Consumer<UserProvider>(builder: (context, providerUser, child) {
@@ -206,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         barLabel.length,
-                            (index) => bar(barLabel[index], index),
+                        (index) => bar(barLabel[index], index),
                       ),
                     ),
                   ),
@@ -236,97 +238,97 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-      ).animate().fadeIn(
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.easeInToLinear,
-      );
+      ).animate().moveY(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOutSine,
+          begin: Get.height);
     });
   }
 
   bar(String label, int index) => Expanded(
-    child: SizedBox(
-      width: MediaQuery.sizeOf(context).width,
-      child: Column(
-        children: [
-          TextButton(
-            style: TextButton.styleFrom(overlayColor: primaryColor),
-            child: Text(
-              label,
-              style: GoogleFonts.poppins(
-                color: currentSelect == index ? primaryColor : Colors.black,
-                fontSize: currentSelect == index ? 12.h : 10.h,
-                fontWeight: FontWeight.w500,
+        child: SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          child: Column(
+            children: [
+              TextButton(
+                style: TextButton.styleFrom(overlayColor: primaryColor),
+                child: Text(
+                  label,
+                  style: GoogleFonts.poppins(
+                    color: currentSelect == index ? primaryColor : Colors.black,
+                    fontSize: currentSelect == index ? 12.h : 10.h,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {
+                    currentSelect = index;
+                    activePage = index;
+                    pageController.animateToPage(index,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.bounceInOut);
+                  });
+                },
               ),
-            ),
-            onPressed: () {
-              setState(() {
-                currentSelect = index;
-                activePage = index;
-                pageController.animateToPage(index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.bounceInOut);
-              });
-            },
-          ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
-            curve: Curves.bounceIn,
-            margin: EdgeInsets.symmetric(horizontal: 10.w),
-            height: currentSelect == index ? 3.h : 0,
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(5.r),
-                topRight: Radius.circular(5.r),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.bounceIn,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                height: currentSelect == index ? 3.h : 0,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5.r),
+                    topRight: Radius.circular(5.r),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   ExportButton() => IntrinsicWidth(
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
-      decoration: const BoxDecoration(color: backgroundColor, boxShadow: [
-        BoxShadow(color: Colors.black87, spreadRadius: 0.1, blurRadius: 0.1)
-      ]),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.download_rounded, size: 18.h),
-          Text(
-            "Export",
-            style: GoogleFonts.poppins(
-              color: Colors.black87,
-              fontSize: 14.h,
-            ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
+          decoration: const BoxDecoration(color: backgroundColor, boxShadow: [
+            BoxShadow(color: Colors.black87, spreadRadius: 0.1, blurRadius: 0.1)
+          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.download_rounded, size: 18.h),
+              Text(
+                "Export",
+                style: GoogleFonts.poppins(
+                  color: Colors.black87,
+                  fontSize: 14.h,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   EditButton() => IntrinsicWidth(
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
-      decoration: const BoxDecoration(color: backgroundColor, boxShadow: [
-        BoxShadow(color: Colors.black87, spreadRadius: 0.1, blurRadius: 0.1)
-      ]),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.edit, size: 18.h),
-          Text(
-            "Edit Profile",
-            style: GoogleFonts.poppins(
-              color: Colors.black87,
-              fontSize: 14.h,
-            ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
+          decoration: const BoxDecoration(color: backgroundColor, boxShadow: [
+            BoxShadow(color: Colors.black87, spreadRadius: 0.1, blurRadius: 0.1)
+          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.edit, size: 18.h),
+              Text(
+                "Edit Profile",
+                style: GoogleFonts.poppins(
+                  color: Colors.black87,
+                  fontSize: 14.h,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }

@@ -60,8 +60,8 @@ import 'package:provider/provider.dart';
 
 class JobDetailPage extends StatefulWidget {
   final Job job;
-  late   bool isBookMark;
-   JobDetailPage({super.key,required this.job, required this.isBookMark});
+  late bool isBookMark;
+  JobDetailPage({super.key, required this.job, required this.isBookMark});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
@@ -70,11 +70,6 @@ class JobDetailPage extends StatefulWidget {
 class _JobDetailPageState extends State<JobDetailPage> {
   final labelArray = ["About", "Company", "Similar Jobs"];
 
-  List<Widget> page = [
-    const AboutDetail(),
-    const CompanyAtDetail(),
-    const SimilarJobDetial()
-  ];
   int currentSelect = 0;
   int activePage = 0;
   final pageController = PageController();
@@ -98,6 +93,15 @@ class _JobDetailPageState extends State<JobDetailPage> {
       context,
       designSize: const Size(430, 932),
     );
+    List<Widget> page = [
+      AboutDetail(
+        job: widget.job,
+      ),
+      CompanyAtDetail(
+        company: widget.job.company,
+      ),
+      SimilarJobDetial()
+    ];
     return Scaffold(
         backgroundColor: accentColor.withOpacity(0.98),
         bottomNavigationBar: SafeArea(
@@ -178,7 +182,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                             height: 10.h,
                           ),
                           Text(
-                            "Briosous Solution",
+                            "${widget.job.company.name}",
                             style: GoogleFonts.poppins(
                                 color: Colors.grey,
                                 fontSize: 15.h,
@@ -216,7 +220,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               _SalaryBox(Iconsax.money, "Salary (Monthly)",
-                                  "\$1K-\$3K"),
+                                  "\$${widget.job.salary}"),
                               _SalaryBox(
                                   Iconsax.briefcase, "Job Type", "Full-Time"),
                             ],
@@ -229,9 +233,9 @@ class _JobDetailPageState extends State<JobDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               _SalaryBox(Iconsax.buildings_2, "Working Model",
-                                  "Remote"),
-                              _SalaryBox(
-                                  Iconsax.chart_21, "Level", "Intership"),
+                                  "${widget.job.workModel}"),
+                              _SalaryBox(Iconsax.chart_21, "Level",
+                                  "${widget.job.level}"),
                             ],
                           ),
 
@@ -418,15 +422,21 @@ class _JobDetailPageState extends State<JobDetailPage> {
                       style: IconButton.styleFrom(
                           padding: EdgeInsets.all(10.h),
                           backgroundColor: backgroundColor,
-                          side: BorderSide(width: 0.01, color: widget.isBookMark ? primaryColor : Colors.grey)),
+                          side: BorderSide(
+                              width: 0.01,
+                              color: widget.isBookMark
+                                  ? primaryColor
+                                  : Colors.grey)),
                       onPressed: () {
-                        final userP = Provider.of<UserProvider>(context,listen: false);
+                        final userP =
+                            Provider.of<UserProvider>(context, listen: false);
                         setState(() {
                           widget.isBookMark = !widget.isBookMark;
                           if (widget.isBookMark) {
                             userP.addJobToUser(userP.user!.id!, widget.job.id);
                           } else {
-                            userP.removeJobFromUser(userP.user!.id!, widget.job.id);
+                            userP.removeJobFromUser(
+                                userP.user!.id!, widget.job.id);
                           }
                         });
                       },

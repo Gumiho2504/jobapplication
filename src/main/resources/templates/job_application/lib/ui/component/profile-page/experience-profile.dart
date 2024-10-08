@@ -24,50 +24,50 @@ class _ExperiencePageViewState extends State<ExperiencePageView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Consumer<UserProvider>(
-
-        builder: (context,userP,_) {
-          final User user = userP.user!;
-          return Column(
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              Column(
-                children: userP.user.profile!.experiences! != null && userP.user.profile!.experiences!.isNotEmpty ?
-          List.generate(user.profile!.experiences!.length, (index) => ExperienceBox(user.profile!.experiences![index])) : [],
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: backgroundColor,
-                      side: BorderSide(width: 2, color: primaryColor)),
-                  onPressed: () {
-                    Get.to(
-                      ExperienceFormScreen(),
+      child: Consumer<UserProvider>(builder: (context, userP, _) {
+        final User user = userP.user!;
+        return Column(
+          children: [
+            SizedBox(
+              height: 20.h,
+            ),
+            Column(
+              children: userP.user.profile!.experiences! != null &&
+                      userP.user.profile!.experiences!.isNotEmpty
+                  ? List.generate(
+                      user.profile!.experiences!.length,
+                      (index) =>
+                          ExperienceBox(user.profile!.experiences![index]))
+                  : [],
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: backgroundColor,
+                    side: BorderSide(width: 2, color: primaryColor)),
+                onPressed: () {
+                  Get.to(ExperienceFormScreen(),
                       transition: Transition.downToUp,
                       duration: Duration(milliseconds: 600),
-                      curve: Curves.easeIn
-                    );
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: 60.h,
-                      // decoration: BoxDecoration(color: Colors.amber),
-                      child: Text(
-                        "+ Add Experiences",
-                        style: GoogleFonts.poppins(
-                            color: primaryColor,
-                            fontSize: 18.h,
-                            fontWeight: FontWeight.w500),
-                      ))),
-              SizedBox(
-                height: 20.h,
-              )
-            ],
-          );
-        }
-      ),
+                      curve: Curves.easeIn);
+                },
+                child: Container(
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    height: 60.h,
+                    // decoration: BoxDecoration(color: Colors.amber),
+                    child: Text(
+                      "+ Add Experiences",
+                      style: GoogleFonts.poppins(
+                          color: primaryColor,
+                          fontSize: 18.h,
+                          fontWeight: FontWeight.w500),
+                    ))),
+            SizedBox(
+              height: 20.h,
+            )
+          ],
+        );
+      }),
     );
   }
 
@@ -156,61 +156,64 @@ class _ExperiencePageViewState extends State<ExperiencePageView> {
           ),
 
 // Edit Button
-  Positioned(
-  right: 10.w,
-  child: TextButton(
-  style: TextButton.styleFrom(
-  padding: EdgeInsets.all(0),
-  side: BorderSide(width: 1, color: Colors.black12),
-  backgroundColor: Colors.transparent,
-  ),
-  onPressed: () {
-  // Navigate to the ExperienceFormScreen to edit the experience data
-  Get.to(ExperienceFormScreen(experienceData: experience));
-  },
-  onLongPress: () {
-  // Show a confirmation dialog before deleting
-  showDialog(
-  context: context,
-  builder: (BuildContext context) {
-  return AlertDialog(
-  title: Text("Delete Experience"),
-  content: Text("Are you sure you want to delete this experience?"),
-  actions: <Widget>[
-  TextButton(
-  onPressed: () {
-  // Dismiss the dialog
-  Navigator.of(context).pop();
-  },
-  child: Text("Cancel"),
-  ),
-  TextButton(
-  onPressed: () async {
-  // Perform delete operation here (implement your delete logic)
-    final userP = Provider.of<UserProvider>(context,listen: false);
-    await userP.userDeleteExperience(userP.user.id!, experience.id!);
-    Get.snackbar("Success","experiece delete");
-  print("Experience deleted");
+          Positioned(
+            right: 10.w,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.all(0),
+                side: BorderSide(width: 1, color: Colors.black12),
+                backgroundColor: Colors.transparent,
+              ),
+              onPressed: () {
+                // Navigate to the ExperienceFormScreen to edit the experience data
+                Get.to(ExperienceFormScreen(experienceData: experience));
+              },
+              onLongPress: () {
+                // Show a confirmation dialog before deleting
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Delete Experience"),
+                      content: Text(
+                          "Are you sure you want to delete this experience?"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            // Dismiss the dialog
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            // Perform delete operation here (implement your delete logic)
+                            final userP = Provider.of<UserProvider>(context,
+                                listen: false);
+                            await userP.userDeleteExperience(
+                                userP.user.id!, experience.id!);
+                            Get.snackbar("Success", "experiece delete");
+                            print("Experience deleted");
 
-  // Dismiss the dialog after deletion
-  Navigator.of(context).pop();
-  },
-  child: Text("Delete"),
-  ),
-  ],
-  );
-  },
-  );
-  },
-  child: Text(
-  "Edit",
-  style: GoogleFonts.poppins(
-  color: Colors.black26,
-  fontSize: 12.h,
-  ),
-  ),
-  ),
-  )
+                            // Dismiss the dialog after deletion
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Delete"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text(
+                "Edit",
+                style: GoogleFonts.poppins(
+                  color: Colors.black26,
+                  fontSize: 12.h,
+                ),
+              ),
+            ),
+          )
         ],
       );
 }
