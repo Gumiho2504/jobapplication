@@ -8,6 +8,7 @@ class JobapplicationApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println('h');
 	}
 
 }
