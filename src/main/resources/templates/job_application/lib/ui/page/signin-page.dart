@@ -9,6 +9,7 @@ import 'package:job_application/ui/page/joblist-page.dart';
 import 'package:job_application/ui/page/login-page.dart';
 import 'package:job_application/ui/page/profile-page.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../navigationController.dart';
 
@@ -20,7 +21,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-
   final userName = TextEditingController();
   final passwords = TextEditingController();
   final email = TextEditingController();
@@ -176,7 +176,7 @@ class _SignInPageState extends State<SignInPage> {
                   if (value!.isEmpty) {
                     return "email is require ";
                   }
-                    // else if (passwords.text != email.text) {
+                  // else if (passwords.text != email.text) {
                   //   return "password not matches ";
                   // }
                   return null;
@@ -188,18 +188,35 @@ class _SignInPageState extends State<SignInPage> {
             ),
 
             ElevatedButton(
-                onPressed: ()  async {
+                onPressed: () async {
                   if (_keyForm.currentState!.validate()) {
                     String name = userName.text;
                     String _email = email.text;
                     String _password = passwords.text;
 
-                    User user = User(id: null,name: name, email: _email, password: _password,saveJobs: []);
+                    User user = User(
+                        id: null,
+                        name: name,
+                        email: _email,
+                        password: _password,
+                        saveJobs: []);
                     print("${user.name} | ${user.email} | ${user.password}");
-               await userP.userSignIn(user);
+                    try {
+                      await userP.userSignIn(user);
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      int userId = userP.user.id!;
+                      await prefs.setBool('isLoggedIn', true);
+                      await prefs.setInt('userId', userId);
 
-                 Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NavigetionPage()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => NavigetionPage()));
+                    } catch (e) {
+                      print(e);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Failed to signin'),
+                      ));
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -224,8 +241,8 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const LoginPage()));
                   },
                   child: Text(
                     "Log In",

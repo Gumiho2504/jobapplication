@@ -105,8 +105,9 @@ class _GetStartPageState extends State<GetStartPage> {
                     children: [
                       ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
                           },
                           style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
@@ -130,8 +131,9 @@ class _GetStartPageState extends State<GetStartPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SignInPage()));
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => SignInPage()));
                             },
                             child: Text(
                               "Sign In",

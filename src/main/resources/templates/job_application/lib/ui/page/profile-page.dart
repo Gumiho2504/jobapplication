@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:job_application/model/user.dart';
@@ -11,9 +12,11 @@ import 'package:job_application/ui/component/profile-page/education-profile.dart
 import 'package:job_application/ui/component/profile-page/experience-profile.dart';
 import 'package:job_application/ui/component/profile-page/skill-profile.dart';
 import 'package:job_application/ui/page/explore-page.dart';
+import 'package:job_application/ui/page/getstart-page.dart';
 import 'package:job_application/ui/page/signin-page.dart';
 import 'package:job_application/ui/style/style.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../provider/user_provider.dart';
 import '../component/profile-page/ProfileForm.dart';
@@ -61,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: title,
                     phoneNumber: phoneNumber,
                   );
-                  providerUser.userAddProfile(providerUser.user!.id!, profile);
+                  providerUser.userAddProfile(providerUser.user.id!, profile);
                   //Navigator.pop(context); // Close the form after submission
                 }),
               );
@@ -111,6 +114,21 @@ class _ProfilePageState extends State<ProfilePage> {
                       ExportButton(),
                       SizedBox(width: 10.w),
                       EditButton(),
+                      SizedBox(width: 10.w),
+                      GestureDetector(
+                        onTap: () async {
+                          // ignore: unnecessary_new
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.setBool('isLoggedIn', false);
+                          await prefs.remove('userId');
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => GetStartPage()),
+                          );
+                        },
+                        child: LogOutButton(),
+                      )
                     ],
                   ),
                 ),
@@ -322,6 +340,27 @@ class _ProfilePageState extends State<ProfilePage> {
               Icon(Icons.edit, size: 18.h),
               Text(
                 "Edit Profile",
+                style: GoogleFonts.poppins(
+                  color: Colors.black87,
+                  fontSize: 14.h,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+  LogOutButton() => IntrinsicWidth(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
+          decoration: const BoxDecoration(color: backgroundColor, boxShadow: [
+            BoxShadow(color: Colors.black87, spreadRadius: 0.1, blurRadius: 0.1)
+          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.edit, size: 18.h),
+              Text(
+                "Log Out",
                 style: GoogleFonts.poppins(
                   color: Colors.black87,
                   fontSize: 14.h,

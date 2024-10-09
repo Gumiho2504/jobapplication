@@ -47,6 +47,7 @@ dependencies:
   geocoding: ^3.0.0
   dropdown_button2: ^2.3.9
   flutter_animate: ^4.5.0
+  shared_preferences: ^2.0.13
   intl: ^0.17.0
 dev_dependencies:
   flutter_test:

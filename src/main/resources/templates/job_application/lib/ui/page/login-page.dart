@@ -7,6 +7,7 @@ import 'package:job_application/provider/user_provider.dart';
 import 'package:job_application/ui/navigationController.dart';
 import 'package:job_application/ui/page/signin-page.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +17,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final email = TextEditingController();
   final passwords = TextEditingController();
   final _keyForm = GlobalKey<FormState>();
@@ -36,9 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     UserProvider _userProvider = Provider.of<UserProvider>(context);
-    void Login(){
-
-    }
+    void Login() {}
     return Scaffold(
         body: Form(
       key: _keyForm,
@@ -148,16 +146,29 @@ class _LoginPageState extends State<LoginPage> {
                   String _email = email.text;
                   String _password = passwords.text;
                   //login(_email, _password);
-                    try {
-                      await _userProvider.userLogin(_email, _password);
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => NavigetionPage()));
-                    }catch(e){
-                      print(e);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Failed to register'),
-                      ));
-                    }
+                  try {
+                    await _userProvider.userLogin(_email, _password);
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    int userId = _userProvider.user.id!;
+                    await prefs.setBool('isLoggedIn', true);
+                    await prefs.setInt('userId', userId);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => NavigetionPage()));
+                    // Navigator.of(context).pushAndRemoveUntil(
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         NavigetionPage(), // Replace with your new screen widget
+                    //   ),
+                    //   (Route<dynamic> route) =>
+                    //       false, // This removes all previous routes
+                    // );
+                  } catch (e) {
+                    print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Failed to register'),
+                    ));
+                  }
 
                   // Get.off(NavigetionPage(),transition: Transition.noTransition);
                 }
@@ -184,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => SignInPage()));
                 },
                 child: Text(
